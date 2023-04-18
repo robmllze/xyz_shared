@@ -1,5 +1,16 @@
 # XYZ SHARED
 
+## Overview
+
+*XYZ Shared* is an important component of the XYZ Flutter App Engine. It is designed to work seamlessly with the following tools:
+
+- The app template `xyz_template` (that depends on `xyz_shared`)
+- The package [xyz_engine_generators_annotations](https://github.com/robmllze/xyz_engine_generators_annotations)
+- The package [_xyz_engine_generators](https://github.com/robmllze/_xyz_engine_generators)
+- The package [xyz_config](https://github.com/robmllze/xyz_config)
+- The package [xyz_pod](https://github.com/robmllze/xyz_pod)
+- The package [xyz_utils](https://github.com/robmllze/xyz_utils)
+
 ## Installation instructions
 
 1. Download this package from GitHub by clicking on this [link](https://github.com/robmllze/xyz_shared/archive/refs/heads/master.zip).
