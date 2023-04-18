@@ -1,5 +1,7 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 //
+// This code is copyrighted - See LICENCE.txt
+//
 // NOTE: For each function you add here, also add a function with the same name
 // and parameters in '_platform_compatibility_web.dart' and
 // '_platform_compatibility_none.dart'

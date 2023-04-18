@@ -1,12 +1,6 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 //
-// This codes defines a class and an extension for working with scalable units.
-// It allows for defining sizes and spacing using values that are scaled based
-// on the screen size and resolution of the device. This can help ensure that
-// the UI layout looks consistent across different devices and screen sizes.
-// The Units class defines a scale factor that is determined based on the device
-// screen size, while the Unit class and auto extension property provide a way
-// to easily apply the scaling factor to specific values.
+// This code is copyrighted - See LICENCE.txt
 //
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
