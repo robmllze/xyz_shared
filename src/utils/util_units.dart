@@ -185,7 +185,7 @@ class Unit {
   final double _value;
   const Unit(this._value);
   static const zero = Unit(0.0);
-  double get auto => this._value.scaled;
+  double get auto => DoubleDotScaled(this._value).scaled;
 }
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
