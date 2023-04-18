@@ -2,7 +2,7 @@
 
 ## Overview
 
-*XYZ Shared* is an important component of the XYZ Framework for Flutter. It is designed to work seamlessly with the following tools:
+*XYZ Shared* is an important component of the *XYZ Framework for Flutter*. It is designed to work seamlessly with the following tools:
 
 - The app template `xyz_template` (that depends on `xyz_shared`)
 - The package [xyz_engine_generators_annotations](https://github.com/robmllze/xyz_engine_generators_annotations)
