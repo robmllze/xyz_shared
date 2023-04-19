@@ -27,7 +27,7 @@ import '/all.dart';
 
 /// ...
 void hOpen() {
-  html.window.open((XYZ_WEB_APP_URL), "_self");
+  html.window.open((XYZ_APP_URL), "_self");
 }
 
 /// ...
