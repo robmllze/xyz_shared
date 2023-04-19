@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '/all.dart';
+import 'my_field.dart';
 
 @GenerateMakeups(
   names: {},
@@ -21,13 +22,19 @@ import '/all.dart';
     "titleBuilder": "Widget Function(MyTextField)?",
   },
 )
-class MyTextField extends StatefulWidget {
+class MyTextField extends StatefulWidget implements MyField {
   final MakeupTextField makeup;
-  final String hintText;
+  @override
+  final Pod<String>? pHint;
+  @override
   final Pod pValue;
+  @override
   final Pod? pTitle;
+  @override
   final Pod<bool>? pEnabled;
+  @override
   final Pod<bool>? pReadOnly;
+  @override
   final Pod<bool>? pObscured;
   final FocusNode? focusNode;
   final void Function(dynamic)? onChanged;
@@ -35,11 +42,12 @@ class MyTextField extends StatefulWidget {
   final void Function(dynamic)? onTapInside;
   final void Function(dynamic)? onTapOutside;
   final Duration onChangedDelay;
+  final bool autofocus;
 
   const MyTextField({
     super.key,
     required this.makeup,
-    this.hintText = "",
+    this.pHint,
     required this.pValue,
     this.pTitle,
     this.pEnabled,
@@ -51,6 +59,7 @@ class MyTextField extends StatefulWidget {
     this.onChangedDelay = const Duration(milliseconds: 500),
     this.onTapInside,
     this.onTapOutside,
+    this.autofocus = false,
   });
 
   @override
@@ -91,6 +100,9 @@ class _State extends State<MyTextField> {
   @override
   void initState() {
     this._addCallback();
+    if (this.widget.autofocus) {
+      this._focusNode.requestFocus();
+    }
     super.initState();
   }
 
