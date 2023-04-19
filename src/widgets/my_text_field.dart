@@ -32,6 +32,8 @@ class MyTextField extends StatefulWidget {
   final FocusNode? focusNode;
   final void Function(dynamic)? onChanged;
   final void Function(dynamic)? onChangedDelayed;
+  final void Function(dynamic)? onTapInside;
+  final void Function(dynamic)? onTapOutside;
   final Duration onChangedDelay;
 
   const MyTextField({
@@ -47,6 +49,8 @@ class MyTextField extends StatefulWidget {
     this.onChanged,
     this.onChangedDelayed,
     this.onChangedDelay = const Duration(milliseconds: 500),
+    this.onTapInside,
+    this.onTapOutside,
   });
 
   @override
@@ -124,7 +128,9 @@ class _State extends State<MyTextField> {
   //
   //
 
-  void _onTapOutside(PointerDownEvent event) {}
+  void _onTapOutside(PointerDownEvent event) {
+    this.widget.onTapOutside?.call(this._pValue.value);
+  }
 
   //
   //
@@ -143,6 +149,7 @@ class _State extends State<MyTextField> {
 
   void _onSelectionChanged(TextSelection selection, SelectionChangedCause? cause) {
     this._baseOffset = selection.baseOffset;
+    this.widget.onTapInside?.call(this._pValue.value);
   }
 
   //
