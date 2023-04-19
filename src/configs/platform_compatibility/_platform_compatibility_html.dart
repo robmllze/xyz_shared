@@ -1,5 +1,7 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 //
+// Xyz Shared
+//
 // This code is copyrighted - See LICENCE.txt
 //
 // Add web-only functions here.
@@ -25,7 +27,7 @@ import '/all.dart';
 
 /// ...
 void hOpen() {
-  html.window.open((APP_URL), "_self");
+  html.window.open((XYZ_WEB_APP_URL), "_self");
 }
 
 /// ...
