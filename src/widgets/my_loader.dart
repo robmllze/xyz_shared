@@ -35,7 +35,7 @@ class MyLoader extends StatelessWidget {
 
   const MyLoader({
     Key? key,
-    this.makeup = const MakeupLoader(),
+    required this.makeup,
   }) : super(key: key);
 
   //
