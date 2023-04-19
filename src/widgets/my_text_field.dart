@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '/all.dart';
-import 'my_field.dart';
 
 @GenerateMakeups(
   names: {},
@@ -10,6 +9,8 @@ import 'my_field.dart';
     "cursorColor": "Color",
     "decoration": "Decoration?",
     "disabledMakeup": "MakeupTextField?",
+    "errorMakeup": "MakeupTextField?",
+    "disabledErrorMakeup": "MakeupTextField?",
     "insidePadding": "EdgeInsets",
     "keyboardType": "TextInputType",
     "leftWidgetBuilder": "Widget Function(MyTextField)?",
@@ -20,22 +21,15 @@ import 'my_field.dart';
     "textAlign": "TextAlign",
     "textStyle": "TextStyle",
     "titleBuilder": "Widget Function(MyTextField)?",
+    "errorBuilder": "Widget Function(MyTextField)?",
+    "hintBuilder": "Widget Function(MyTextField)?",
   },
 )
-class MyTextField extends StatefulWidget implements MyField {
+class MyTextField extends MyFieldWidget {
   final MakeupTextField makeup;
-  @override
+
   final Pod<String>? pHint;
-  @override
-  final Pod pValue;
-  @override
-  final Pod? pTitle;
-  @override
-  final Pod<bool>? pEnabled;
-  @override
-  final Pod<bool>? pReadOnly;
-  @override
-  final Pod<bool>? pObscured;
+
   final FocusNode? focusNode;
   final void Function(dynamic)? onChanged;
   final void Function(dynamic)? onChangedDelayed;
@@ -48,11 +42,11 @@ class MyTextField extends StatefulWidget implements MyField {
     super.key,
     required this.makeup,
     this.pHint,
-    required this.pValue,
-    this.pTitle,
-    this.pEnabled,
-    this.pReadOnly,
-    this.pObscured,
+    required super.pValue,
+    super.pTitle,
+    super.pEnabled,
+    super.pReadOnly,
+    super.pObscured,
     this.focusNode,
     this.onChanged,
     this.onChangedDelayed,
@@ -62,20 +56,18 @@ class MyTextField extends StatefulWidget implements MyField {
     this.autofocus = false,
   });
 
+  String get text => this.pValue.value?.toString() ?? "";
+
   @override
   _State createState() => _State();
 }
 
-class _State extends State<MyTextField> {
+class _State extends MyFieldState<MyTextField> {
   //
   //
   //
 
-  late final _pValue = this.widget.pValue;
-  late final _pTitle = this.widget.pTitle;
-  late final _pEnabled = this.widget.pEnabled;
-  late final _pReadOnly = this.widget.pReadOnly;
-  late final _pObscured = this.widget.pObscured;
+  late final _pHint = this.widget.pHint;
   late final void Function() _removeCallback;
   late final _makeup = this.widget.makeup;
   late final _controller = TextEditingController();
@@ -89,7 +81,7 @@ class _State extends State<MyTextField> {
       ? Debouncer(
           delay: this.widget.onChangedDelay,
           onWaited: () {
-            this.widget.onChangedDelayed!(this._pValue.value);
+            this.widget.onChangedDelayed!(this.pValue.value);
           },
         )
       : null;
@@ -111,7 +103,7 @@ class _State extends State<MyTextField> {
   //
 
   void _addCallback() {
-    this._removeCallback = this._pValue.addListener((final data) async {
+    this._removeCallback = this.pValue.addListener((final data) async {
       final text = data.value?.toString() ?? "";
       this._controller.value = this._controller.value.copyWith(
             text: text,
@@ -127,11 +119,7 @@ class _State extends State<MyTextField> {
   @override
   void dispose() {
     this._removeCallback();
-    this._pValue.disposeIfRequested();
-    this._pEnabled?.disposeIfRequested();
-    this._pReadOnly?.disposeIfRequested();
-    this._pObscured?.disposeIfRequested();
-    this._pTitle?.disposeIfRequested();
+    this._pHint?.disposeIfRequested();
     this._controller.dispose();
     super.dispose();
   }
@@ -141,7 +129,7 @@ class _State extends State<MyTextField> {
   //
 
   void _onTapOutside(PointerDownEvent event) {
-    this.widget.onTapOutside?.call(this._pValue.value);
+    this.widget.onTapOutside?.call(this.pValue.value);
   }
 
   //
@@ -149,7 +137,7 @@ class _State extends State<MyTextField> {
   //
 
   void _onChanged(dynamic value) async {
-    await this._pValue.set(value, shouldExecuteCallbacks: false);
+    await this.pValue.set(value, shouldExecuteCallbacks: false);
     this._controller.selection = TextSelection.collapsed(offset: this._baseOffset);
     this.widget.onChanged?.call(value);
     this._onChangedDebouncer?.call();
@@ -161,7 +149,7 @@ class _State extends State<MyTextField> {
 
   void _onSelectionChanged(TextSelection selection, SelectionChangedCause? cause) {
     this._baseOffset = selection.baseOffset;
-    this.widget.onTapInside?.call(this._pValue.value);
+    this.widget.onTapInside?.call(this.pValue.value);
   }
 
   //
@@ -174,13 +162,23 @@ class _State extends State<MyTextField> {
     final scrollPadding = EdgeInsets.all($20);
     return Consumer(
       builder: (_, final ref, __) {
-        this._pValue.watch(ref);
-        final title = this._pTitle?.watch(ref);
-        final enabled = this._pEnabled?.watch(ref) ?? true;
-        final readOnly0 = this._pReadOnly?.watch(ref) ?? false;
+        final value = this.pValue.watch(ref);
+        final title = this.pTitle?.watch(ref);
+        final enabled = this.pEnabled?.watch(ref) ?? true;
+        final readOnly0 = this.pReadOnly?.watch(ref) ?? false;
         final readOnly1 = readOnly0 || !enabled;
-        final obscured = this._pObscured?.watch(ref) ?? false;
-        final makeup = enabled ? this._makeup : this._makeup.disabledMakeup ?? this._makeup;
+        final obscured = this.pObscured?.watch(ref) ?? false;
+        final hint = this._pHint?.watch(ref);
+        final error = this.pError?.watch(ref);
+        final hasError = error != null;
+        final makeup = (enabled
+                ? hasError
+                    ? this._makeup.errorMakeup
+                    : this._makeup
+                : hasError
+                    ? this._makeup.disabledErrorMakeup
+                    : this._makeup.disabledMakeup) ??
+            this._makeup;
         return GestureDetector(
           onTap: () {
             this._focusNode.requestFocus();
@@ -197,27 +195,33 @@ class _State extends State<MyTextField> {
                   child: Row(
                     children: [
                       if (makeup.leftWidgetBuilder != null) makeup.leftWidgetBuilder!(this.widget),
-                      Expanded(
-                        child: EditableText(
-                          backgroundCursorColor: makeup.cursorColor,
-                          controller: this._controller,
-                          cursorColor: makeup.cursorColor,
-                          cursorWidth: cursorWidth,
-                          enableInteractiveSelection: true,
-                          focusNode: this._focusNode,
-                          keyboardType: makeup.keyboardType,
-                          maxLines: makeup.maxLines,
-                          obscureText: obscured,
-                          onChanged: this._onChanged,
-                          onSelectionChanged: this._onSelectionChanged,
-                          onTapOutside: this._onTapOutside,
-                          readOnly: readOnly1,
-                          scrollPadding: scrollPadding,
-                          selectionColor: makeup.selectionColor,
-                          selectionControls: this._selectionControls,
-                          style: makeup.textStyle,
-                          textAlign: makeup.textAlign,
-                        ),
+                      Stack(
+                        children: [
+                          Expanded(
+                            child: EditableText(
+                              backgroundCursorColor: makeup.cursorColor,
+                              controller: this._controller,
+                              cursorColor: makeup.cursorColor,
+                              cursorWidth: cursorWidth,
+                              enableInteractiveSelection: true,
+                              focusNode: this._focusNode,
+                              keyboardType: makeup.keyboardType,
+                              maxLines: makeup.maxLines,
+                              obscureText: obscured,
+                              onChanged: this._onChanged,
+                              onSelectionChanged: this._onSelectionChanged,
+                              onTapOutside: this._onTapOutside,
+                              readOnly: readOnly1,
+                              scrollPadding: scrollPadding,
+                              selectionColor: makeup.selectionColor,
+                              selectionControls: this._selectionControls,
+                              style: makeup.textStyle,
+                              textAlign: makeup.textAlign,
+                            ),
+                          ),
+                          if (hint != null && makeup.hintBuilder != null)
+                            makeup.hintBuilder!(this.widget),
+                        ],
                       ),
                       if (makeup.rightWidgetBuilder != null)
                         makeup.rightWidgetBuilder!(this.widget),
@@ -225,6 +229,7 @@ class _State extends State<MyTextField> {
                   ),
                 ),
               ),
+              if (error != null && makeup.errorBuilder != null) makeup.errorBuilder!(this.widget),
             ],
           ),
         );

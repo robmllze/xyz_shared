@@ -12,6 +12,7 @@ export 'my_button_icon.dart';
 export 'my_circle.dart';
 export 'my_collapsable.dart';
 export 'my_column.dart';
+export 'my_field_stateful_widget.dart';
 export 'my_future.dart';
 export 'my_hide_keyboard_on_tap.dart';
 export 'my_history_activity_list.dart';
