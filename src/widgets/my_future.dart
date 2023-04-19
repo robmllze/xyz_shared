@@ -53,7 +53,7 @@ class MyFuture<T> extends StatelessWidget {
             return this.onNone?.call(context, snapshot) ?? const SizedBox();
           case ConnectionState.waiting:
             return this.onWaiting?.call(context, snapshot) ??
-                MyLoader(makeup: this.makeup ?? G.theme.loaderPrimary());
+                MyLoader(makeup: this.makeup ?? G.theme.loaderDefault());
           case ConnectionState.active:
             return this.onActive?.call(context, snapshot) ?? const SizedBox();
           case ConnectionState.done:

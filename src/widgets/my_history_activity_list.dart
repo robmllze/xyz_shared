@@ -98,13 +98,13 @@ class MyHistoryActivityList extends StatelessWidget {
                 children: [
                   entry.value.child,
                   const SizedBox(height: 7),
-                  Text(
-                    DateFormat.yMMMMd("en_US").add_jm().format(entry.value.createdAt),
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey,
-                    ),
-                  ),
+                  // Text(
+                  //   DateFormat.yMMMMd("en_US").add_jm().format(entry.value.createdAt),
+                  //   style: const TextStyle(
+                  //     fontSize: 11,
+                  //     color: Colors.grey,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
