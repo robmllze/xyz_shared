@@ -13,6 +13,7 @@ export 'my_circle.dart';
 export 'my_collapsable.dart';
 export 'my_column.dart';
 export 'my_future.dart';
+export 'my_hide_keyboard_on_tap.dart';
 export 'my_history_activity_list.dart';
 export 'my_indented_json.dart';
 export 'my_loader.dart';
