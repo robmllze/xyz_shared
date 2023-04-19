@@ -10,11 +10,17 @@ import '/all.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-// xyz_shared uses this to refresh the web app.
-const XYZ_WEB_APP_URL = "https://medikinect.app/";
+/// Used to refresh the web app.
+const XYZ_APP_URL = "https://xyz.app/";
 
-// xyz_shared uses hard-coded, deterministic  passwords to encrypt and decrypt
-// data stored on devices, shared preferences or cookies.
+/// Used to read and write local data relevant to your app's ID.
+const XYZ_APP_ID = "xyz_app";
+
+/// Used to read and write local data relevant to your app's version.
+const XYZ_APP_VERSION = "0";
+
+// Used to generate a deterministic password to encrypt and decrypt local data
+// relevant to your app's version.
 String xyzDeterministicPassword(int seed) {
   // The objective is to make it more challenging to reverse-engineer hard-coded
   // passwords. To accomplish this, the generateDeterministicPassword function

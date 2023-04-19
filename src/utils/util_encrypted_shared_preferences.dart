@@ -18,9 +18,15 @@ extension EncryptedSharedPreferences on SharedPreferences {
   //
   //
 
+  static final _password = xyzDeterministicPassword(1);
+
+  //
+  //
+  //
+
   Future<bool> setStringSalsa20(String key, String value) {
     // Password = hardcoded password + key.
-    final password = Key.fromUtf8("${"YOUR_HARDCODED_PASSWORD_HERE"}$key");
+    final password = Key.fromUtf8("$_password$key");
     final encrypter = Encrypter(Salsa20(password));
     final encrypted = encrypter.encrypt(value, iv: IV.fromLength(8));
     return this.setString(key, encrypted.base64);
@@ -34,7 +40,7 @@ extension EncryptedSharedPreferences on SharedPreferences {
     final raw = this.getString(key);
     if (raw != null) {
       // Password = hardcoded password + key.
-      final password = Key.fromUtf8("${"YOUR_HARDCODED_PASSWORD_HERE"}$key");
+      final password = Key.fromUtf8("$_password$key");
       final encrypter = Encrypter(Salsa20(password));
       final decrypted = encrypter.decrypt(
         Encrypted.fromBase64(raw),
@@ -75,5 +81,5 @@ extension EncryptedSharedPreferences on SharedPreferences {
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-String specificKey(String key) => "${"YOUR_APP_ID_HERE"}?key=$key";
-String specificVersionKey(String key) => "${"YOUR_APP_ID_HERE"}?version=$K_APP_VERSION&key=$key";
+String specificKey(String key) => "$XYZ_APP_ID?key=$key";
+String specificVersionKey(String key) => "$XYZ_APP_ID?version=$XYZ_APP_VERSION&key=$key";
