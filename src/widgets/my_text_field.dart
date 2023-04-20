@@ -1,16 +1,27 @@
+// ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+//
+// Xyz Shared
+//
+// This code is copyrighted - See LICENCE.txt
+//
+// ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '/all.dart';
 
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 @GenerateMakeups(
-  names: {},
   parameters: {
     "cursorColor": "Color",
     "decoration": "Decoration?",
-    "disabledMakeup": "MakeupTextField?",
-    "errorMakeup": "MakeupTextField?",
     "disabledErrorMakeup": "MakeupTextField?",
+    "disabledMakeup": "MakeupTextField?",
+    "errorBuilder": "Widget Function(MyTextField)?",
+    "errorMakeup": "MakeupTextField?",
+    "hintBuilder": "Widget Function(MyTextField)?",
     "insidePadding": "EdgeInsets",
     "keyboardType": "TextInputType",
     "leftWidgetBuilder": "Widget Function(MyTextField)?",
@@ -21,15 +32,20 @@ import '/all.dart';
     "textAlign": "TextAlign",
     "textStyle": "TextStyle",
     "titleBuilder": "Widget Function(MyTextField)?",
-    "errorBuilder": "Widget Function(MyTextField)?",
-    "hintBuilder": "Widget Function(MyTextField)?",
+    "makeupFilterBuilder":
+        "MakeupTextField Function(MakeupTextField, MyTextField, MyTextFieldState)?",
   },
 )
+
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 class MyTextField extends MyFieldWidget {
+  //
+  //
+  //
+
   final MakeupTextField makeup;
-
   final Pod<String>? pHint;
-
   final FocusNode? focusNode;
   final void Function(dynamic)? onChanged;
   final void Function(dynamic)? onChangedDelayed;
@@ -37,6 +53,10 @@ class MyTextField extends MyFieldWidget {
   final void Function(dynamic)? onTapOutside;
   final Duration onChangedDelay;
   final bool autofocus;
+
+  //
+  //
+  //
 
   const MyTextField({
     super.key,
@@ -56,13 +76,23 @@ class MyTextField extends MyFieldWidget {
     this.autofocus = false,
   });
 
+  //
+  //
+  //
+
   String get text => this.pValue.value?.toString() ?? "";
 
+  //
+  //
+  //
+
   @override
-  _State createState() => _State();
+  MyTextFieldState createState() => MyTextFieldState();
 }
 
-class _State extends MyFieldState<MyTextField> {
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+class MyTextFieldState extends MyFieldState<MyTextField> {
   //
   //
   //
@@ -162,16 +192,16 @@ class _State extends MyFieldState<MyTextField> {
     final scrollPadding = EdgeInsets.all($20);
     return Consumer(
       builder: (_, final ref, __) {
-        final value = this.pValue.watch(ref);
+        this.pValue.watch(ref);
         final title = this.pTitle?.watch(ref);
         final enabled = this.pEnabled?.watch(ref) ?? true;
-        final readOnly0 = this.pReadOnly?.watch(ref) ?? false;
-        final readOnly1 = readOnly0 || !enabled;
+        final readOnly = (this.pReadOnly?.watch(ref) ?? false) || !enabled;
         final obscured = this.pObscured?.watch(ref) ?? false;
         final hint = this._pHint?.watch(ref);
         final error = this.pError?.watch(ref);
         final hasError = error != null;
-        final makeup = (enabled
+        final hasFocus = this._focusNode.hasFocus;
+        var makeup = (enabled
                 ? hasError
                     ? this._makeup.errorMakeup
                     : this._makeup
@@ -179,14 +209,24 @@ class _State extends MyFieldState<MyTextField> {
                     ? this._makeup.disabledErrorMakeup
                     : this._makeup.disabledMakeup) ??
             this._makeup;
+        final makeupFilterBuilder = this._makeup.makeupFilterBuilder;
+        if (makeupFilterBuilder != null) {
+          makeup = makeupFilterBuilder(makeup, this.widget, this);
+        }
+        final titleBuilder = makeup.titleBuilder;
+        final leftWidgetBuilder = makeup.leftWidgetBuilder;
+        final rightWidgetBuilder = makeup.rightWidgetBuilder;
+        final hintBuilder = makeup.hintBuilder;
+        final errorBuilder = makeup.errorBuilder;
         return GestureDetector(
           onTap: () {
             this._focusNode.requestFocus();
+            this.widget.onTapInside?.call(this.pValue.value);
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (title != null && makeup.titleBuilder != null) makeup.titleBuilder!(this.widget),
+              if (title != null && titleBuilder != null) titleBuilder(this.widget),
               Container(
                 padding: makeup.outsidePadding,
                 decoration: makeup.decoration,
@@ -194,7 +234,7 @@ class _State extends MyFieldState<MyTextField> {
                   padding: makeup.insidePadding,
                   child: Row(
                     children: [
-                      if (makeup.leftWidgetBuilder != null) makeup.leftWidgetBuilder!(this.widget),
+                      if (leftWidgetBuilder != null) leftWidgetBuilder(this.widget),
                       Stack(
                         children: [
                           Expanded(
@@ -211,7 +251,7 @@ class _State extends MyFieldState<MyTextField> {
                               onChanged: this._onChanged,
                               onSelectionChanged: this._onSelectionChanged,
                               onTapOutside: this._onTapOutside,
-                              readOnly: readOnly1,
+                              readOnly: readOnly,
                               scrollPadding: scrollPadding,
                               selectionColor: makeup.selectionColor,
                               selectionControls: this._selectionControls,
@@ -219,17 +259,16 @@ class _State extends MyFieldState<MyTextField> {
                               textAlign: makeup.textAlign,
                             ),
                           ),
-                          if (hint != null && makeup.hintBuilder != null)
-                            makeup.hintBuilder!(this.widget),
+                          if (hint != null && hintBuilder != null && !hasFocus)
+                            hintBuilder(this.widget),
                         ],
                       ),
-                      if (makeup.rightWidgetBuilder != null)
-                        makeup.rightWidgetBuilder!(this.widget),
+                      if (rightWidgetBuilder != null) rightWidgetBuilder(this.widget),
                     ],
                   ),
                 ),
               ),
-              if (error != null && makeup.errorBuilder != null) makeup.errorBuilder!(this.widget),
+              if (error != null && errorBuilder != null) errorBuilder(this.widget),
             ],
           ),
         );
