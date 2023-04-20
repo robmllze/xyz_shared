@@ -1,6 +1,16 @@
-import 'package:flutter/cupertino.dart';
+// ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+//
+// Xyz Shared
+//
+// This code is copyrighted - See LICENCE.txt
+//
+// ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
+import 'package:flutter/material.dart';
 
 import '/all.dart';
+
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 abstract class MyFieldWidget extends StatefulWidget {
   final Pod pValue;
@@ -8,7 +18,7 @@ abstract class MyFieldWidget extends StatefulWidget {
   final Pod<bool>? pEnabled;
   final Pod<bool>? pObscured;
   final Pod<bool>? pReadOnly;
-  final Pod<String?>? pError;
+  final Pod<String?>? pErrorText;
 
   const MyFieldWidget({
     super.key,
@@ -17,7 +27,7 @@ abstract class MyFieldWidget extends StatefulWidget {
     this.pEnabled,
     this.pObscured,
     this.pReadOnly,
-    this.pError,
+    this.pErrorText,
   });
 
   @override
@@ -26,7 +36,7 @@ abstract class MyFieldWidget extends StatefulWidget {
 
 abstract class MyFieldState<T extends MyFieldWidget> extends State<T> {
   late final pValue = this.widget.pValue;
-  late final pError = this.widget.pError;
+  late final pErrorText = this.widget.pErrorText;
   late final pTitle = this.widget.pTitle;
   late final pEnabled = this.widget.pEnabled;
   late final pReadOnly = this.widget.pReadOnly;
@@ -39,7 +49,7 @@ abstract class MyFieldState<T extends MyFieldWidget> extends State<T> {
     this.pEnabled?.disposeIfRequested();
     this.pReadOnly?.disposeIfRequested();
     this.pObscured?.dispose();
-    this.pError?.disposeIfRequested();
+    this.pErrorText?.disposeIfRequested();
     super.dispose();
   }
 }

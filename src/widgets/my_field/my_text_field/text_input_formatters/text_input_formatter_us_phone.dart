@@ -10,9 +10,6 @@ import 'package:flutter/services.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-//LengthLimitingTextInputFormatter(8),
-//FilteringTextInputFormatter.allow(RegExp(r'[0-9/]')),
-
 class TextInputFormatter_USPhone extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(final oldValue, final newValue) {
@@ -34,7 +31,7 @@ class TextInputFormatter_USPhone extends TextInputFormatter {
     }
     return TextEditingValue(
       text: text,
-      selection: TextSelection.collapsed(offset: l),
+      selection: TextSelection.collapsed(offset: text.length),
     );
   }
 }

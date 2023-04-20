@@ -65,7 +65,7 @@ class MyTextField extends MyFieldWidget {
     this.pAutoFillHints,
     required super.pValue,
     super.pTitle,
-    super.pError,
+    super.pErrorText,
     super.pEnabled,
     super.pReadOnly,
     super.pObscured,
@@ -217,7 +217,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
         final readOnly = (super.pReadOnly?.watch(ref) ?? false) || !enabled;
         final obscured = super.pObscured?.watch(ref) ?? false;
         final hint = this._pHint?.watch(ref);
-        final error = this.pError?.watch(ref);
+        final error = this.pErrorText?.watch(ref);
         final hasError = error != null;
         final hasFocus = this._pHasFocus.watch(ref);
         final autoFillHints = this._pAutoFillHints?.watch(ref) ?? [];
