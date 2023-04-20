@@ -100,7 +100,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
   late final _makeup = this.widget.makeup;
   late final _controller = TextEditingController();
   var _baseOffset = 0;
-  late final _focusNode = this.widget.focusNode ?? FocusNode();
+  late final focusNode = this.widget.focusNode ?? FocusNode();
   final _selectionControls = CurrentPlatform.isOsApple
       ? CupertinoTextSelectionControls()
       : MaterialTextSelectionControls();
@@ -113,11 +113,9 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
   @override
   void initState() {
     this._removeOnValueChanged = this.pValue.addListener(this.onValueChanged);
-    if (this.widget.autofocus) {
-      this._focusNode.requestFocus();
-    }
-    this._pHasFocus = Pod<bool>(this._focusNode.hasFocus);
-    this._focusNode.addListener(this._onFocusChanged);
+    if (this.widget.autofocus) this.focusNode.requestFocus();
+    this._pHasFocus = Pod<bool>(this.focusNode.hasFocus);
+    this.focusNode.addListener(this._onFocusChanged);
     super.initState();
   }
 
@@ -128,7 +126,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
   @override
   void dispose() {
     this._removeOnValueChanged();
-    this._focusNode.removeListener(this._onFocusChanged);
+    this.focusNode.removeListener(this._onFocusChanged);
     this._pHasFocus.dispose();
     this._controller.dispose();
     this._pHint?.disposeIfRequested();
@@ -151,7 +149,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
   //
 
   Future<void> _onFocusChanged() async {
-    await this._pHasFocus.set(this._focusNode.hasFocus);
+    await this._pHasFocus.set(this.focusNode.hasFocus);
   }
 
   //
@@ -200,7 +198,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
   //
 
   void _onSubmitted(_) {
-    this._focusNode.unfocus();
+    this.focusNode.unfocus();
   }
 
   //
@@ -251,7 +249,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
         final errorBuilder = activeMakeup.errorBuilder;
         return GestureDetector(
           onTap: () {
-            this._focusNode.requestFocus();
+            this.focusNode.requestFocus();
             this.widget.onTapInside?.call(this._event);
           },
           child: Column(
@@ -279,7 +277,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
                                 cursorColor: activeMakeup.cursorColor,
                                 cursorWidth: cursorWidth,
                                 enableInteractiveSelection: true,
-                                focusNode: this._focusNode,
+                                focusNode: this.focusNode,
                                 keyboardType: activeMakeup.keyboardType,
                                 maxLines: activeMakeup.maxLines,
                                 obscureText: obscured,
