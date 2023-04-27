@@ -37,7 +37,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   final _history = _HistoryMap();
   _HistoryMap get history => _HistoryMap.of(this._history);
 
-  final _stack = <SuperScreenPage>[];
+  final _stack = <MyScreenPage>[];
 
   dynamic _transitionDelegate = const NoAnimationTransitionDelegate();
 
@@ -349,13 +349,13 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   //
   //
 
-  SuperScreenPage? get _currentPage => this._stack.isNotEmpty ? this._stack.last : null;
+  MyScreenPage? get _currentPage => this._stack.isNotEmpty ? this._stack.last : null;
 
   //
   //
   //
 
-  Widget _navigator(SuperScreenPage currentPage) {
+  Widget _navigator(MyScreenPage currentPage) {
     return Stack(
       alignment: Alignment.center,
       children: [

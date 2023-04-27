@@ -23,9 +23,9 @@ class MyScreenBuilder {
   //
   //
 
-  SuperScreen? _screenCurrent, _screenPrevious;
-  SuperScreen? get screenCurrent => this._screenCurrent;
-  SuperScreen? get screenPrevious => this._screenPrevious;
+  MyScreen? _screenCurrent, _screenPrevious;
+  MyScreen? get screenCurrent => this._screenCurrent;
+  MyScreen? get screenPrevious => this._screenPrevious;
 
   //
   //
@@ -73,7 +73,7 @@ class MyScreenBuilder {
   //
   //
 
-  Future<SuperScreen?> build(MyRouteConfiguration? configuration) async {
+  Future<MyScreen?> build(MyRouteConfiguration? configuration) async {
     // Returning `null` indicates to stay on current screen.
     if (configuration == null) return null;
 
@@ -94,7 +94,7 @@ class MyScreenBuilder {
 
     // Pop the current dialog if there is one.
     Future.delayed(Duration.zero, () {
-      SuperScreen.pDialog.set(null);
+      MyScreen.pDialog.set(null);
     });
 
     // Return the current screen.
@@ -114,7 +114,7 @@ RegExp locationToExp(String location) {
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-SuperScreen? configurationToScreen(MyRouteConfiguration configuration) {
+MyScreen? configurationToScreen(MyRouteConfiguration configuration) {
   for (final screenMaker in SCREEN_MAKERS) {
     final screen = screenMaker.call(
       configuration,
