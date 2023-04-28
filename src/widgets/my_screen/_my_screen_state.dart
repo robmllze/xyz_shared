@@ -101,29 +101,29 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
   //
 
   /// ...
-  // Future<void> openDialog(SuperDialog dialog) async {
-  //   // Dismiss keyboard.
-  //   FocusScope.of(context).unfocus();
-  //   debugLogStart("Opening dialog ${dialog.runtimeType}");
-  //   dialog.onError ??= (Object? e) async {
-  //     await Future.delayed(const Duration(milliseconds: 500));
-  //     await this.openDialog(
-  //       SuperDialogOkay(
-  //         makeup: G.theme.screen,
-  //         title: "Oh no!",
-  //         message: e.toString(),
-  //         labelOkay: "OKAY",
-  //       ),
-  //     );
-  //   };
-  //   this.setState(() {
-  //     SuperScreen.pDialog.set(dialog);
-  //   });
-  //   await dialog.completer.future;
-  //   if (dialog.shouldCloseOnComplete) {
-  //     this.closeDialog();
-  //   }
-  // }
+  Future<void> openDialog(SuperDialog dialog) async {
+    // Dismiss keyboard.
+    FocusScope.of(context).unfocus();
+    debugLogStart("Opening dialog ${dialog.runtimeType}");
+    dialog.onError ??= (Object? e) async {
+      await Future.delayed(const Duration(milliseconds: 500));
+      await this.openDialog(
+        SuperDialogOkay(
+          makeup: G.theme.screenDefault(),
+          title: "Oh no!",
+          message: e.toString(),
+          labelOkay: "OKAY",
+        ),
+      );
+    };
+    this.setState(() {
+      MyScreen.pDialog.set(dialog);
+    });
+    await dialog.completer.future;
+    if (dialog.shouldCloseOnComplete) {
+      this.closeDialog();
+    }
+  }
 
   //
   //

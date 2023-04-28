@@ -4,35 +4,60 @@
 //
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
-part of 'my_screen.dart';
+import 'package:flutter/material.dart';
+
+import '/all.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-class MyScreenLogic<T extends MyRouteConfiguration> {
+class Manager_BottomNavigationBar {
   //
   //
   //
 
-  final MyScreen myScreen;
-  final MyScreenState superState;
+  final Widget widget;
 
-  //
-  //
-  //
+  late final Pod<Widget?> pValue;
 
-  const MyScreenLogic(this.myScreen, this.superState);
-
-  //
-  //
-  //
-
-  @visibleForOverriding
-  void initLogic() async {}
+  Manager_BottomNavigationBar(this.widget) {
+    pValue = Pod<Widget?>(this.widget);
+  }
 
   //
   //
   //
 
-  @visibleForOverriding
-  void dispose() async {}
+  bool isVisible() => pValue.valueAs() == null;
+
+  //
+  //
+  //
+
+  Future<void> show() async {
+    if (!this.isVisible()) {
+      await pValue.set(widget);
+    }
+  }
+
+  //
+  //
+  //
+
+  Future<void> hide() async {
+    if (this.isVisible()) {
+      await pValue.set(null);
+    }
+  }
+
+  //
+  //
+  //
+
+  Future<bool> toggle() async {
+    final visible = this.isVisible();
+    await pValue.set(
+      visible ? widget : null,
+    );
+    return !visible;
+  }
 }
