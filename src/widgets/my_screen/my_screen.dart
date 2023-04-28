@@ -51,7 +51,7 @@ abstract class MyScreen extends ConsumerStatefulWidget {
     this.configuration, {
     String? title,
     MakeupScreen? makeup,
-    this.bottomNavigationBar = const BottomNavigationBarDefault(),
+    this.bottomNavigationBar = const MyBottomNavigationBarDefault(),
   })  : this.title = title ?? "name-app".tr(),
         this.makeup = makeup ?? G.theme.screenDefault(),
         super(key: UriKey(configuration.uri));
@@ -77,7 +77,7 @@ abstract class MyScreen extends ConsumerStatefulWidget {
     await Future.wait([
       //G.fbAnalytics.setCurrentScreen(screenName: screenName),
       () async {
-        await Manager_BottomNavigationBar.instance.pValue.set(this.bottomNavigationBar);
+        await G.managerBottomNavigationBar.pValue.set(this.bottomNavigationBar);
       }(),
     ]);
 
@@ -98,7 +98,7 @@ abstract class MyScreen extends ConsumerStatefulWidget {
 
   Future<void> onPostScreenBuild(BuildContext context) async {
     debugLog("Building ${this.configuration.uri}");
-    await Manager_BottomNavigationBar.instance.pValue.set(this.bottomNavigationBar);
+    await G.managerBottomNavigationBar.pValue.set(this.bottomNavigationBar);
   }
 
   //
