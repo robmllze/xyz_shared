@@ -113,5 +113,7 @@ abstract class MyScreen extends ConsumerStatefulWidget {
   //
   //
 
-  MyScreenLogic createLogic(MyScreen screen, MyScreenState state);
+  MyScreenLogic createLogic(MyScreen screen, MyScreenState state) {
+    return MyScreenLogic(screen, state);
+  }
 }

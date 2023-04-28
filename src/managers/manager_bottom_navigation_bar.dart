@@ -14,6 +14,7 @@ class Manager_BottomNavigationBar {
   //
   //
   //
+  //
 
   final Widget widget;
 

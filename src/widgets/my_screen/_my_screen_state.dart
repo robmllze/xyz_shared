@@ -17,7 +17,8 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
   late final T2 configuration =
       (configurationCasts[T2]?.call(this.widget.configuration) ?? this.widget.configuration) as T2;
 
-  late T3 logic = this.widget.createLogic(this.widget, this) as T3;
+  late final _rawLogic = this.widget.createLogic(this.widget, this);
+  late T3 logic = this._rawLogic as T3;
 
   static bool _didRemoveSplashScreen = false;
 
@@ -32,6 +33,9 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
 
   @override
   void initState() {
+    // ...
+    this._rawLogic.initLogic();
+
     // Log when screen gets initialized.
     final uri = this.widget.configuration.uri;
     debugLogStart("Initializing $uri");
@@ -55,22 +59,23 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
 
   @override
   void dispose() async {
+    // Log when screen gets disposed.
+    final uri = this.widget.configuration.uri;
+    debugLog("Disposing $uri");
+
     // ...
     final key = this.widget.key as UriKey;
     _MyScreenTimer._history.lastWhere((final l) => l.key == key);
-
-    // Log when screen gets disposed.
-    final uri = this.widget.configuration.uri;
 
     // ...
     G.pTheme.callbacks.remove(this.widget.key);
 
     // ...
-    this.logic.dispose();
+
+    super.dispose();
 
     // ...
-    debugLog("Disposing $uri");
-    super.dispose();
+    this._rawLogic.dispose();
   }
 
   //

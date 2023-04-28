@@ -89,13 +89,13 @@ class _State extends State<SuperDialogBody> {
                           alignment: Alignment.topRight,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: makeup.palette.contrast900.withOpacity(0.2),
+                              color: G.theme.palette.contrast900.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(4.0.scaled),
                             ),
                             child: MyButtonIcon(
                               icon: Icon(
                                 Icons.close,
-                                color: makeup.palette.contrast0,
+                                color: G.theme.palette.contrast0,
                                 size: 16.0.scaled,
                               ),
                               onTap: onClose,
