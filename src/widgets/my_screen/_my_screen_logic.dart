@@ -13,14 +13,14 @@ class MyScreenLogic<T extends MyRouteConfiguration> {
   //
   //
 
-  final MyScreen superScreen;
+  final MyScreen myScreen;
   final MyScreenState superState;
 
   //
   //
   //
 
-  const MyScreenLogic(this.superScreen, this.superState);
+  const MyScreenLogic(this.myScreen, this.superState);
 
   //
   //
