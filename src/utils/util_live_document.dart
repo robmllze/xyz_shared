@@ -26,7 +26,7 @@ class LiveDocument<T> {
   final Pod<T> pValue;
 
   /// A queue of functions that need to be executed in order.
-  static final _queue = FunctionQueue();
+  final _queue = FunctionQueue();
 
   /// The stream subscription that listens for changes to the document.
   late final StreamSubscription<DocumentSnapshot<Json>> _stream;
@@ -63,16 +63,13 @@ class LiveDocument<T> {
 
     // Listen for changes to the Firestore document and update the value of the
     // `Pod` instance.
-    instance._stream = ref.snapshots().listen((final snapshot) async {
-      Future<bool> updator() async {
-        final results = await pValue.set(
-          fromMapper(snapshot.data() ?? {}),
-          equals: equalsDeepCollection,
-        );
-        return results != null;
-      }
-
-      /*final isUpdated = */ await _queue.add(updator);
+    instance._stream = ref.snapshots().listen((final snapshot) {
+      final before = toMapper(pValue.value);
+      final after = snapshot.data() ?? {};
+      pValue.set(
+        fromMapper(after),
+        equals: (_, __) => equalsDeepCollection(before, after),
+      );
     });
 
     return instance;
@@ -81,23 +78,15 @@ class LiveDocument<T> {
   /// Saves the current value of the document to Firestore and returns the
   /// same value.
   Future<T> save(_, T data) async {
-    await _queue.add(
-      () async {
-        await this.ref.set(this.toMapper(data), SetOptions(merge: true));
-      },
-      buffer: const Duration(seconds: 1),
-    );
+    await this._queue.add(() {
+      return this.ref.set(this.toMapper(data), SetOptions(merge: true));
+    });
     return data;
   }
 
   /// Deletes the Firestore document.
   Future<void> delete() async {
-    await _queue.add(
-      () async {
-        await this.ref.delete();
-      },
-      buffer: const Duration(seconds: 1),
-    );
+    await this._queue.add(this.ref.delete);
   }
 
   /// Stops listening for changes to the Firestore document and disposes the
