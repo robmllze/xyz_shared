@@ -67,7 +67,7 @@ abstract class ModelEventsUtils extends XyzModel {
       final ref = ModelEventsUtils.refFirestore(collection, id);
       final json = this.toJson();
       try {
-        await ref.setSafe(json, SetOptions(merge: true));
+        await ref.set(json, SetOptions(merge: true));
       } catch (e) {
         throw Exception(
           "Failed to write ModelEvents to Firestore: $e",

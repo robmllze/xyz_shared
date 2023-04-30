@@ -63,6 +63,7 @@ class _State extends State<MyDialogOkay> {
   @override
   Widget build(_) {
     final dialogMakeup = this.widget.dialogMakeup ?? G.theme.dialogDefault();
+    final buttonMakeup = this.widget.buttonMakeup ?? G.theme.buttonDefault();
     final onClose = this.widget.onClose;
     return MyDialogBody(
       makeup: dialogMakeup,
@@ -85,26 +86,21 @@ class _State extends State<MyDialogOkay> {
             wHeight40(),
             Text(
               this.widget.title,
-              style: G.theme.textStyles.h5,
+              style: dialogMakeup.titleTextStyle,
             ),
             wHeight16(),
             Text(
               this.widget.message,
-              style: G.theme.textStyles.p1,
+              style: dialogMakeup.messageTextStyle,
             ),
             wHeight20(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyButtonClear(
-                  child: Text(
-                    this.widget.labelOkay,
-                    style: G.theme.textStyles.p2Primary.copyWith(
-                      letterSpacing: 1.0.scaled,
-                      fontWeight: FONT_WEIGHT_SEMI_BOLD,
-                    ),
-                  ),
-                  onPressed: () async {
+                MyButton(
+                  label: this.widget.labelOkay,
+                  makeup: buttonMakeup,
+                  onTap: () async {
                     try {
                       await this.widget.onTapOkay?.call();
                     } catch (e) {

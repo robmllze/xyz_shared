@@ -36,8 +36,8 @@ class _FieldReference {
   //
   //
 
-  Future<T?> getSafe<T>() async {
-    final data = (await this.ref.getSafe()).data();
+  Future<T?> get<T>() async {
+    final data = (await this.ref.get()).data();
     if (data is Map) {
       return let<T>(data[this.path]);
     }
@@ -53,7 +53,7 @@ class _FieldReference {
     bool shouldCreateIfNonExistent = true,
     bool shouldMerge = true,
   }) {
-    return G.fbFirestore.runTransactionSafe(
+    return G.fbFirestore.runTransaction(
       (final tr) async => await tr.get(this.ref).then((final snapshot) async {
         final dataOld = snapshot.data()?[this.path];
         if (!shouldCreateIfNonExistent && dataOld == null) return false;
@@ -64,9 +64,7 @@ class _FieldReference {
         }
         return false;
       }),
-      reads: 1,
-      writes: 1,
-      deletes: 0,
+ 
     );
   }
 
@@ -114,7 +112,7 @@ class _FieldReference {
   //
 
   Future<void> addToArray(List<dynamic> elements) async {
-    await ref.setSafe(
+    await ref.set(
       {this.path: FieldValue.arrayUnion(elements)},
       SetOptions(merge: true),
     );
@@ -125,7 +123,7 @@ class _FieldReference {
   //
 
   Future<void> removeFromArray(List<dynamic> elements) async {
-    await ref.setSafe(
+    await ref.set(
       {this.path: FieldValue.arrayRemove(elements)},
       SetOptions(merge: true),
     );
@@ -136,7 +134,7 @@ class _FieldReference {
   //
 
   Future<void> delete() async {
-    await ref.setSafe(
+    await ref.set(
       {this.path: FieldValue.delete()},
       SetOptions(merge: true),
     );
@@ -147,7 +145,7 @@ class _FieldReference {
   //
 
   Future<void> increment([num delta = 1]) async {
-    await ref.setSafe(
+    await ref.set(
       {this.path: FieldValue.increment(delta)},
       SetOptions(merge: true),
     );
@@ -158,7 +156,7 @@ class _FieldReference {
   //
 
   Future<void> decrement([num delta = 1]) async {
-    await ref.setSafe(
+    await ref.set(
       {this.path: FieldValue.increment(-delta)},
       SetOptions(merge: true),
     );
