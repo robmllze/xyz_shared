@@ -49,6 +49,7 @@ class MyTextField extends MyFieldWidget {
   final FocusNode? focusNode;
   final void Function(MyTextFieldEvent)? onChanged;
   final void Function(MyTextFieldEvent)? onChangedDelayed;
+  final void Function(MyTextFieldEvent)? onSubmitted;
   final void Function(MyTextFieldEvent)? onTapInside;
   final void Function(MyTextFieldEvent)? onTapOutside;
   final Duration onChangedDelay;
@@ -64,18 +65,19 @@ class MyTextField extends MyFieldWidget {
     this.pHint,
     this.pAutoFillHints,
     required super.pValue,
-    super.pTitle,
-    super.pErrorText,
     super.pEnabled,
-    super.pReadOnly,
+    super.pErrorText,
     super.pObscured,
+    super.pReadOnly,
+    super.pTitle,
+    this.autofocus = false,
     this.focusNode,
     this.onChanged,
-    this.onChangedDelayed,
     this.onChangedDelay = const Duration(milliseconds: 500),
+    this.onChangedDelayed,
+    this.onSubmitted,
     this.onTapInside,
     this.onTapOutside,
-    this.autofocus = false,
   });
 
   //
@@ -199,6 +201,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
 
   void _onSubmitted(_) {
     this.focusNode.unfocus();
+    this.widget.onSubmitted?.call(this._event);
   }
 
   //
