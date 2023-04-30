@@ -13,26 +13,24 @@ import '/all.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-class MyLoaderDynamic extends StatelessWidget {
+class MyFutureLoader extends StatelessWidget {
   //
   //
   //
 
+  final MakeupLoader? makeup;
   final Future<void> future;
-  final MakeupLoader makeup;
-  final double? size;
   final bool shouldIndicateWhenDone;
 
   //
   //
   //
 
-  const MyLoaderDynamic({
+  const MyFutureLoader({
     Key? key,
+    this.makeup,
     required this.future,
-    required this.makeup,
     this.shouldIndicateWhenDone = true,
-    this.size,
   }) : super(key: key);
 
   //
@@ -41,8 +39,9 @@ class MyLoaderDynamic extends StatelessWidget {
 
   @override
   Widget build(_) {
+    final makeup = this.makeup ?? G.theme.loaderDefault();
     return SizedBox.square(
-      dimension: this.size ?? $32,
+      dimension: makeup.size,
       child: Center(
         child: LayoutBuilder(
           builder: (_, final constraints) {
@@ -74,8 +73,8 @@ class MyLoaderDynamic extends StatelessWidget {
                   padding: EdgeInsets.all(0.12 * smallest),
                   child: CircularProgressIndicator(
                     color: Colors.transparent,
-                    backgroundColor: this.makeup.backgroundColor,
-                    valueColor: this.makeup.valueColor,
+                    backgroundColor: makeup.backgroundColor,
+                    valueColor: makeup.valueColor,
                     strokeWidth: 0.11 * smallest,
                   ),
                 ),

@@ -69,9 +69,8 @@ class _State extends State<MyDialogLoading> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyLoaderDynamic(
-              makeup: this.widget.loaderMakeup ?? G.theme.loaderDefault(),
-              size: $32,
+            MyFutureLoader(
+              makeup: (this.widget.loaderMakeup ?? G.theme.loaderDefault())..size = $32,
               future: () async {
                 try {
                   await this.widget.onLoading?.call();
