@@ -16,11 +16,16 @@ Future<void> main(List<String> args) async {
     const URL = "https://github.com/robmllze/xyz_shared/archive/refs/heads/master.zip";
     final currentPath = Directory.current.path;
     final libPath = "$currentPath/lib";
+    final d1 = Directory("$libPath/xyz_shared-master");
+    final d2 = Directory("$libPath/xyz_shared");
+    try {
+      d1.deleteSync(recursive: true);
+    } catch (_) {}
     await downloadAndExtractZip(URL, libPath);
-    final sourceDirectory = Directory("$libPath/xyz_shared-master");
-    sourceDirectory.deleteSync(recursive: true);
-    final destinationDirectory = Directory("$libPath/xyz_shared");
-    sourceDirectory.renameSync(destinationDirectory.path);
+    try {
+      d2.deleteSync(recursive: true);
+    } catch (_) {}
+    d1.renameSync(d2.path);
     print("[fetch xyz_shared] Success!!!");
   } catch (e) {
     print("[fetch xyz_shared] Failed: $e");
