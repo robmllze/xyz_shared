@@ -9,9 +9,9 @@
 - The package [_xyz_generate_makeups](https://github.com/robmllze/_xyz_generate_makeups)
 - The package [_xyz_generate_models](https://github.com/robmllze/_xyz_generate_models)
 - The package [_xyz_generate_screen_access](https://github.com/robmllze/_xyz_generate_screen_access)
-- The package [_xyz_generate_makeups_annotations](https://github.com/robmllze/_xyz_generate_makeups_annotations)
-- The package [_xyz_generate_models_annotations](https://github.com/robmllze/_xyz_generate_models_annotations)
-- The package [_xyz_generate_screen_access_annotations](https://github.com/robmllze/_xyz_generate_screen_access_annotations)
+- The package [xyz_generate_makeups_annotations](https://github.com/robmllze/xyz_generate_makeups_annotations)
+- The package [xyz_generate_models_annotations](https://github.com/robmllze/xyz_generate_models_annotations)
+- The package [xyz_generate_screen_access_annotations](https://github.com/robmllze/xyz_generate_screen_access_annotations)
 
 - The package [xyz_config](https://github.com/robmllze/xyz_config)
 - The package [xyz_pod](https://github.com/robmllze/xyz_pod)
