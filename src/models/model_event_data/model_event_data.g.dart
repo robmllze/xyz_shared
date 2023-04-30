@@ -29,6 +29,12 @@ class ModelEventData extends ModelEventDataUtils {
   /// Value corresponding to the key `date_sent` or [K_DATE_SENT].
   DateTime? dateSent;
 
+  /// Key corresponding to the value `eventsPath`.
+  static const K_EVENTS_PATH = "events_path";
+
+  /// Value corresponding to the key `events_path` or [K_EVENTS_PATH].
+  String? eventsPath;
+
   /// Key corresponding to the value `isArchived`.
   static const K_IS_ARCHIVED = "is_archived";
 
@@ -71,17 +77,11 @@ class ModelEventData extends ModelEventDataUtils {
   /// Value corresponding to the key `lifespan` or [K_LIFESPAN].
   Duration? lifespan;
 
-  /// Key corresponding to the value `pathEvents`.
-  static const K_PATH_EVENTS = "path_events";
+  /// Key corresponding to the value `receiver`.
+  static const K_RECEIVER = "receiver";
 
-  /// Value corresponding to the key `path_events` or [K_PATH_EVENTS].
-  String? pathEvents;
-
-  /// Key corresponding to the value `reciever`.
-  static const K_RECIEVER = "reciever";
-
-  /// Value corresponding to the key `reciever` or [K_RECIEVER].
-  ModelUserData? reciever;
+  /// Value corresponding to the key `receiver` or [K_RECEIVER].
+  ModelUserData? receiver;
 
   /// Key corresponding to the value `sender`.
   static const K_SENDER = "sender";
@@ -101,11 +101,11 @@ class ModelEventData extends ModelEventDataUtils {
   /// Value corresponding to the key `times_read` or [K_TIMES_READ].
   Map<String, Timestamp>? timesRead;
 
-  /// Key corresponding to the value `type`.
-  static const K_TYPE = "type";
+  /// Key corresponding to the value `typeCode`.
+  static const K_TYPE_CODE = "type_code";
 
-  /// Value corresponding to the key `type` or [K_TYPE].
-  EventType? type;
+  /// Value corresponding to the key `type_code` or [K_TYPE_CODE].
+  String? typeCode;
 
   //
   //
@@ -117,6 +117,7 @@ class ModelEventData extends ModelEventDataUtils {
     dynamic args,
     this.body,
     this.dateSent,
+    this.eventsPath,
     this.isArchived,
     this.isDelivered,
     this.isHidden,
@@ -124,12 +125,11 @@ class ModelEventData extends ModelEventDataUtils {
     this.isRead,
     this.isSent,
     this.lifespan,
-    this.pathEvents,
-    this.reciever,
+    this.receiver,
     this.sender,
     this.timesDelivered,
     this.timesRead,
-    this.type,
+    this.typeCode,
   }) : super._() {
     super.id = id;
     super.args = args;
@@ -150,6 +150,7 @@ class ModelEventData extends ModelEventDataUtils {
             .nullsRemoved()
             .nullIfEmpty(),
         dateSent: (json[K_DATE_SENT] as Timestamp?)?.toDate(),
+        eventsPath: (json[K_EVENTS_PATH]?.toString()),
         id: (json[K_ID]?.toString()),
         isArchived: letAs<bool>(json[K_IS_ARCHIVED]),
         isDelivered: letAs<bool>(json[K_IS_DELIVERED]),
@@ -161,9 +162,8 @@ class ModelEventData extends ModelEventDataUtils {
           final a = letAs<int>(json[K_LIFESPAN]);
           return a != null ? Duration(microseconds: a) : null;
         }(),
-        pathEvents: (json[K_PATH_EVENTS]?.toString()),
-        reciever: () {
-          final l = letAs<Map>(json[K_RECIEVER]);
+        receiver: () {
+          final l = letAs<Map>(json[K_RECEIVER]);
           return l != null
               ? ModelUserData?.fromJson(
                   l.map(
@@ -224,7 +224,7 @@ class ModelEventData extends ModelEventDataUtils {
             )
             .nullsRemoved()
             .nullIfEmpty(),
-        type: labelToEventType(letAs<String>(json[K_TYPE])),
+        typeCode: (json[K_TYPE_CODE]?.toString()),
       );
     } catch (e) {
       throw Exception(
@@ -259,6 +259,7 @@ class ModelEventData extends ModelEventDataUtils {
             final a = dateSent;
             return a != null ? Timestamp.fromDate(a) : null;
           }(),
+          K_EVENTS_PATH: eventsPath?.nullIfEmpty(),
           K_ID: id?.nullIfEmpty(),
           K_IS_ARCHIVED: isArchived,
           K_IS_DELIVERED: isDelivered,
@@ -267,8 +268,7 @@ class ModelEventData extends ModelEventDataUtils {
           K_IS_READ: isRead,
           K_IS_SENT: isSent,
           K_LIFESPAN: lifespan?.inMicroseconds,
-          K_PATH_EVENTS: pathEvents?.nullIfEmpty(),
-          K_RECIEVER: reciever?.toJson().nullsRemoved().nullIfEmpty(),
+          K_RECEIVER: receiver?.toJson().nullsRemoved().nullIfEmpty(),
           K_SENDER: sender?.toJson().nullsRemoved().nullIfEmpty(),
           K_TIMES_DELIVERED: timesDelivered
               ?.map(
@@ -288,7 +288,7 @@ class ModelEventData extends ModelEventDataUtils {
               )
               .nullsRemoved()
               .nullIfEmpty(),
-          K_TYPE: type?.name,
+          K_TYPE_CODE: typeCode?.nullIfEmpty(),
         }..removeWhere((_, final l) => l == null),
         typesAllowed: {Timestamp, FieldValue},
         // Defined in utils/timestamp.dart
@@ -310,6 +310,7 @@ class ModelEventData extends ModelEventDataUtils {
         args: other.args ?? this.args,
         body: other.body ?? this.body,
         dateSent: other.dateSent ?? this.dateSent,
+        eventsPath: other.eventsPath ?? this.eventsPath,
         id: other.id ?? this.id,
         isArchived: other.isArchived ?? this.isArchived,
         isDelivered: other.isDelivered ?? this.isDelivered,
@@ -318,12 +319,11 @@ class ModelEventData extends ModelEventDataUtils {
         isRead: other.isRead ?? this.isRead,
         isSent: other.isSent ?? this.isSent,
         lifespan: other.lifespan ?? this.lifespan,
-        pathEvents: other.pathEvents ?? this.pathEvents,
-        reciever: other.reciever ?? this.reciever,
+        receiver: other.receiver ?? this.receiver,
         sender: other.sender ?? this.sender,
         timesDelivered: other.timesDelivered ?? this.timesDelivered,
         timesRead: other.timesRead ?? this.timesRead,
-        type: other.type ?? this.type,
+        typeCode: other.typeCode ?? this.typeCode,
       ) as T;
     }
     throw Exception(
@@ -356,6 +356,9 @@ class ModelEventData extends ModelEventDataUtils {
       if (other.dateSent != null) {
         this.dateSent = other.dateSent;
       }
+      if (other.eventsPath != null) {
+        this.eventsPath = other.eventsPath;
+      }
       if (other.id != null) {
         this.id = other.id;
       }
@@ -380,11 +383,8 @@ class ModelEventData extends ModelEventDataUtils {
       if (other.lifespan != null) {
         this.lifespan = other.lifespan;
       }
-      if (other.pathEvents != null) {
-        this.pathEvents = other.pathEvents;
-      }
-      if (other.reciever != null) {
-        this.reciever = other.reciever;
+      if (other.receiver != null) {
+        this.receiver = other.receiver;
       }
       if (other.sender != null) {
         this.sender = other.sender;
@@ -395,8 +395,8 @@ class ModelEventData extends ModelEventDataUtils {
       if (other.timesRead != null) {
         this.timesRead = other.timesRead;
       }
-      if (other.type != null) {
-        this.type = other.type;
+      if (other.typeCode != null) {
+        this.typeCode = other.typeCode;
       }
       return;
     }
