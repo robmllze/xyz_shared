@@ -23,7 +23,7 @@ class _CustomScrollBarState extends State<CustomScrollBar> {
   }
 
   void _startTimer() {
-    _timer = Timer(Duration(seconds: 1), () {
+    _timer = Timer(const Duration(seconds: 1), () {
       setState(() {
         _isDragging = false;
       });
@@ -50,7 +50,7 @@ class _CustomScrollBarState extends State<CustomScrollBar> {
           child: widget.child,
         ),
         AnimatedOpacity(
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           opacity: _isDragging ? 1.0 : 0.0,
           child: Positioned(
             right: 0,

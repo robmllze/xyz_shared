@@ -14,12 +14,12 @@ import '/all.dart';
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 /// ...
-class SuperDialogBody extends StatefulWidget {
+class MyDialogBody extends StatefulWidget {
   //
   //
   //
 
-  final MakeupScreen makeup;
+  final MakeupDialog makeup;
   final Widget child;
   final Widget? header;
   final Future<void> Function()? onClose;
@@ -28,7 +28,7 @@ class SuperDialogBody extends StatefulWidget {
   //
   //
 
-  const SuperDialogBody({
+  const MyDialogBody({
     Key? key,
     required this.makeup,
     required this.child,
@@ -46,7 +46,7 @@ class SuperDialogBody extends StatefulWidget {
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-class _State extends State<SuperDialogBody> {
+class _State extends State<MyDialogBody> {
   @override
   Widget build(_) {
     final makeup = this.widget.makeup;
@@ -55,27 +55,17 @@ class _State extends State<SuperDialogBody> {
     return Material(
       color: Colors.transparent,
       child: MyAnimatedFade(
-        layer1: Container(color: G.theme.palette.shade100.withOpacity(0.40)),
+        layer1: Container(color: makeup.overlayColor),
         layer2: Column(
           children: [
             const Spacer(),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.0.scaled),
+              padding: EdgeInsets.symmetric(horizontal: $24),
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: makeup.backgroundColor,
-                  borderRadius: BorderRadius.circular(4.0.scaled),
-                  boxShadow: [
-                    BoxShadow(
-                      color: G.theme.palette.shade100.withOpacity(0.1),
-                      blurRadius: 4.0.scaled,
-                      spreadRadius: 2.0.scaled,
-                    ),
-                  ],
-                ),
+                decoration: makeup.decoration,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4.0.scaled),
+                  borderRadius: makeup.decoration.borderRadius,
                   child: Stack(
                     children: [
                       Column(
@@ -89,14 +79,14 @@ class _State extends State<SuperDialogBody> {
                           alignment: Alignment.topRight,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: G.theme.palette.contrast900.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(4.0.scaled),
+                              color: makeup.closeIconColor.withOpacity(0.2),
+                              borderRadius: makeup.decoration.borderRadius,
                             ),
                             child: MyButtonIcon(
                               icon: Icon(
                                 Icons.close,
-                                color: G.theme.palette.contrast0,
-                                size: 16.0.scaled,
+                                color: makeup.closeIconColor,
+                                size: $16,
                               ),
                               onTap: onClose,
                             ),

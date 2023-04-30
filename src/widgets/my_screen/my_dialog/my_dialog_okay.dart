@@ -16,37 +16,37 @@ import '/all.dart';
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 /// ...
-class SuperDialogAOrB extends SuperDialog {
+class MyDialogOkay extends MyDialog {
   //
   //
   //
 
-  final MakeupScreen makeup;
-  final String title, message, labelB, labelA;
-  final Future<void> Function()? onTapB, onTapA, onClose;
+  final MakeupDialog? dialogMakeup;
+  final MakeupButton? buttonMakeup;
+  final String title, message, labelOkay;
   final Widget? header;
+  final Future<void> Function()? onTapOkay, onClose;
 
   //
   //
   //
 
-  SuperDialogAOrB({
+  MyDialogOkay({
     Key? key,
-    required this.makeup,
+    this.dialogMakeup,
+    this.buttonMakeup,
     required this.title,
     required this.message,
-    required this.labelA,
-    required this.labelB,
-    this.onClose,
-    this.onTapA,
-    this.onTapB,
+    required this.labelOkay,
     this.header,
+    this.onTapOkay,
+    this.onClose,
     Future<void> Function(Object? e)? onError,
-    bool shouldAutoCloseOnComplete = true,
+    bool shouldCloseOnComplete = true,
   }) : super(
           key: key,
           onError: onError,
-          shouldCloseOnComplete: shouldAutoCloseOnComplete,
+          shouldCloseOnComplete: shouldCloseOnComplete,
         );
 
   //
@@ -59,12 +59,13 @@ class SuperDialogAOrB extends SuperDialog {
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-class _State extends State<SuperDialogAOrB> {
+class _State extends State<MyDialogOkay> {
   @override
   Widget build(_) {
+    final dialogMakeup = this.widget.dialogMakeup ?? G.theme.dialogDefault();
     final onClose = this.widget.onClose;
-    return SuperDialogBody(
-      makeup: this.widget.makeup,
+    return MyDialogBody(
+      makeup: dialogMakeup,
       header: this.widget.header,
       onClose: onClose != null
           ? () async {
@@ -91,29 +92,21 @@ class _State extends State<SuperDialogAOrB> {
               this.widget.message,
               style: G.theme.textStyles.p1,
             ),
-            wHeight24(),
+            wHeight20(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyButton(
-                  label: this.widget.labelA,
-                  makeup: G.theme.buttonPrimary(),
-                  onTap: () async {
+                MyButtonClear(
+                  child: Text(
+                    this.widget.labelOkay,
+                    style: G.theme.textStyles.p2Primary.copyWith(
+                      letterSpacing: 1.0.scaled,
+                      fontWeight: FONT_WEIGHT_SEMI_BOLD,
+                    ),
+                  ),
+                  onPressed: () async {
                     try {
-                      await this.widget.onTapA?.call();
-                    } catch (e) {
-                      await this.widget.onError?.call(e);
-                    }
-                    this.widget.completer.complete();
-                  },
-                ),
-                wWidth12(),
-                MyButton(
-                  label: this.widget.labelB,
-                  makeup: G.theme.buttonPrimary(),
-                  onTap: () async {
-                    try {
-                      await this.widget.onTapB?.call();
+                      await this.widget.onTapOkay?.call();
                     } catch (e) {
                       await this.widget.onError?.call(e);
                     }

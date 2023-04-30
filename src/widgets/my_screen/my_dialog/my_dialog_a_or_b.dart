@@ -16,35 +16,40 @@ import '/all.dart';
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 /// ...
-class SuperDialogOkay extends SuperDialog {
+class MyDialogAOrB extends MyDialog {
   //
   //
   //
 
-  final MakeupScreen makeup;
-  final String title, message, labelOkay;
+  final MakeupDialog? dialogMakeup;
+  final MakeupButton? buttonMakeupA, buttonMakeupB;
+  final String title, message, labelB, labelA;
+  final Future<void> Function()? onTapB, onTapA, onClose;
   final Widget? header;
-  final Future<void> Function()? onTapOkay, onClose;
 
   //
   //
   //
 
-  SuperDialogOkay({
+  MyDialogAOrB({
     Key? key,
-    required this.makeup,
+    this.dialogMakeup,
+    this.buttonMakeupA,
+    this.buttonMakeupB,
     required this.title,
     required this.message,
-    required this.labelOkay,
-    this.header,
-    this.onTapOkay,
+    required this.labelA,
+    required this.labelB,
     this.onClose,
+    this.onTapA,
+    this.onTapB,
+    this.header,
     Future<void> Function(Object? e)? onError,
-    bool shouldCloseOnComplete = true,
+    bool shouldAutoCloseOnComplete = true,
   }) : super(
           key: key,
           onError: onError,
-          shouldCloseOnComplete: shouldCloseOnComplete,
+          shouldCloseOnComplete: shouldAutoCloseOnComplete,
         );
 
   //
@@ -57,12 +62,15 @@ class SuperDialogOkay extends SuperDialog {
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-class _State extends State<SuperDialogOkay> {
+class _State extends State<MyDialogAOrB> {
   @override
   Widget build(_) {
+    final dialogMakeup = this.widget.dialogMakeup ?? G.theme.dialogDefault();
+    final buttonMakeupA = this.widget.buttonMakeupA ?? G.theme.buttonDefault();
+    final buttonMakeupB = this.widget.buttonMakeupB ?? G.theme.buttonDefault();
     final onClose = this.widget.onClose;
-    return SuperDialogBody(
-      makeup: this.widget.makeup,
+    return MyDialogBody(
+      makeup: dialogMakeup,
       header: this.widget.header,
       onClose: onClose != null
           ? () async {
@@ -75,35 +83,43 @@ class _State extends State<SuperDialogOkay> {
             }
           : null,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 28.0.scaled),
+        padding: EdgeInsets.symmetric(horizontal: $28),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             wHeight40(),
             Text(
               this.widget.title,
-              style: G.theme.textStyles.h5,
+              style: dialogMakeup.titleTextStyle,
             ),
             wHeight16(),
             Text(
               this.widget.message,
-              style: G.theme.textStyles.p1,
+              style: dialogMakeup.messageTextStyle,
             ),
-            wHeight20(),
+            wHeight24(),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyButtonClear(
-                  child: Text(
-                    this.widget.labelOkay,
-                    style: G.theme.textStyles.p2Primary.copyWith(
-                      letterSpacing: 1.0.scaled,
-                      fontWeight: FONT_WEIGHT_SEMI_BOLD,
-                    ),
-                  ),
-                  onPressed: () async {
+                MyButton(
+                  label: this.widget.labelA,
+                  makeup: buttonMakeupA,
+                  onTap: () async {
                     try {
-                      await this.widget.onTapOkay?.call();
+                      await this.widget.onTapA?.call();
+                    } catch (e) {
+                      await this.widget.onError?.call(e);
+                    }
+                    this.widget.completer.complete();
+                  },
+                ),
+                wWidth12(),
+                MyButton(
+                  label: this.widget.labelB,
+                  makeup: buttonMakeupB,
+                  onTap: () async {
+                    try {
+                      await this.widget.onTapB?.call();
                     } catch (e) {
                       await this.widget.onError?.call(e);
                     }

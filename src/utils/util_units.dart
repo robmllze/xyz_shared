@@ -6,8 +6,6 @@
 //
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
-import 'dart:ui' show Size;
-
 import '/all.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -57,7 +55,9 @@ class Units {
   //
   //
 
-  late double _$4,
+  late double _$1,
+      _$2,
+      _$4,
       _$8,
       _$12,
       _$16,
@@ -113,6 +113,8 @@ class Units {
   //
 
   void _recalculate() {
+    this._$1 = 1.0 * this.factor;
+    this._$2 = 2.0 * this.factor;
     this._$4 = 4.0 * this.factor;
     this._$8 = 8.0 * this.factor;
     this._$12 = 12.0 * this.factor;
@@ -186,6 +188,8 @@ class Unit {
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+double get $1 => G.units._$1;
+double get $2 => G.units._$2;
 double get $4 => G.units._$4;
 double get $8 => G.units._$8;
 double get $12 => G.units._$12;

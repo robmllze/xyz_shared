@@ -106,16 +106,16 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
   //
 
   /// ...
-  Future<void> openDialog(SuperDialog dialog) async {
+  Future<void> openDialog(MyDialog dialog) async {
     // Dismiss keyboard.
     FocusScope.of(context).unfocus();
     debugLogStart("Opening dialog ${dialog.runtimeType}");
     dialog.onError ??= (Object? e) async {
       await Future.delayed(const Duration(milliseconds: 500));
       await this.openDialog(
-        SuperDialogOkay(
-          makeup: G.theme.screenDefault(),
-          title: "Oh no!",
+        MyDialogOkay(
+          dialogMakeup: G.theme.dialogDefault(),
+          title: "Oh no",
           message: e.toString(),
           labelOkay: "OKAY",
         ),

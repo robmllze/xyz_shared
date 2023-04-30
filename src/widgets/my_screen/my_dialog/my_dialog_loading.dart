@@ -16,12 +16,13 @@ import '/all.dart';
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 /// ...
-class SuperDialogLoading extends SuperDialog {
+class MyDialogLoading extends MyDialog {
   //
   //
   //
 
-  final MakeupScreen makeup;
+  final MakeupDialog? dialogMakeup;
+  final MakeupLoader? loaderMakeup;
   final String title, message;
   final Future<void> Function()? onLoading;
   final Widget? header;
@@ -30,9 +31,10 @@ class SuperDialogLoading extends SuperDialog {
   //
   //
 
-  SuperDialogLoading({
+  MyDialogLoading({
     Key? key,
-    required this.makeup,
+    this.dialogMakeup,
+    this.loaderMakeup,
     required this.title,
     required this.message,
     this.onLoading,
@@ -55,20 +57,21 @@ class SuperDialogLoading extends SuperDialog {
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-class _State extends State<SuperDialogLoading> {
+class _State extends State<MyDialogLoading> {
   @override
   Widget build(_) {
-    return SuperDialogBody(
-      makeup: this.widget.makeup,
+    final dialogMakeup = this.widget.dialogMakeup ?? G.theme.dialogDefault();
+    return MyDialogBody(
+      makeup: dialogMakeup,
       header: this.widget.header,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 35.0.scaled, vertical: 50.0.scaled),
+        padding: EdgeInsets.symmetric(horizontal: $32, vertical: $48),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             MyLoaderDynamic(
-              makeup: G.theme.loaderPrimary(),
-              size: 30.0.scaled,
+              makeup: this.widget.loaderMakeup ?? G.theme.loaderDefault(),
+              size: $32,
               future: () async {
                 try {
                   await this.widget.onLoading?.call();
@@ -85,12 +88,12 @@ class _State extends State<SuperDialogLoading> {
                 children: [
                   Text(
                     this.widget.title,
-                    style: G.theme.textStyles.h5,
+                    style: dialogMakeup.titleTextStyle,
                   ),
                   wHeight4(),
                   Text(
                     this.widget.message,
-                    style: G.theme.textStyles.p1,
+                    style: dialogMakeup.messageTextStyle,
                   ),
                 ],
               ),
