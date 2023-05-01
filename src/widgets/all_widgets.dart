@@ -17,6 +17,7 @@ export 'my_dialog/my_dialog_body.dart';
 export 'my_dialog/my_dialog_loading.dart';
 export 'my_dialog/my_dialog_okay.dart';
 export 'my_field/my_field_stateful_widget.dart';
+export 'my_field/my_text_field/my_tapable_text_field.dart';
 export 'my_field/my_text_field/my_text_field.dart';
 export 'my_field/my_text_field/my_text_field_event.dart';
 export 'my_field/my_text_field/text_input_formatters/text_input_formatter_us_date.dart';

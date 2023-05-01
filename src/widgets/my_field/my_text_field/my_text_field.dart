@@ -43,7 +43,7 @@ class MyTextField extends MyFieldWidget {
   //
   //
 
-  final MakeupTextField makeup;
+  final MakeupTextField? makeup;
   final Pod<String>? pHint;
   final Pod<List<String>>? pAutoFillHints;
   final FocusNode? focusNode;
@@ -61,7 +61,7 @@ class MyTextField extends MyFieldWidget {
 
   const MyTextField({
     super.key,
-    required this.makeup,
+    this.makeup,
     this.pHint,
     this.pAutoFillHints,
     required super.pValue,
@@ -99,7 +99,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
   late final _pHint = this.widget.pHint;
   late final _pAutoFillHints = this.widget.pAutoFillHints;
   late final void Function() _removeOnValueChanged;
-  late final _makeup = this.widget.makeup;
+  //late final _makeup = this.widget.makeup;
   late final _controller = TextEditingController();
   var _baseOffset = 0;
   late final focusNode = this.widget.focusNode ?? FocusNode();
@@ -210,6 +210,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
 
   @override
   Widget build(_) {
+    final makeup = this.widget.makeup ?? G.theme.textFieldDefault();
     final cursorWidth = 1.5.scaled;
     final scrollPadding = EdgeInsets.all($20);
     return Consumer(
@@ -225,7 +226,7 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
         final hasFocus = this._pHasFocus.watch(ref);
         final autoFillHints = this._pAutoFillHints?.watch(ref) ?? [];
         this._event = MyTextFieldEvent(
-          this._makeup,
+          makeup,
           this,
           text,
           hasFocus,
@@ -238,13 +239,13 @@ class MyTextFieldState extends MyFieldState<MyTextField> {
           autoFillHints,
         );
         var activeMakeup = (enabled
-                ? (hasError ? this._makeup.errorMakeupFilter?.call(this._event) : this._makeup)
+                ? (hasError ? makeup.errorMakeupFilter?.call(this._event) : makeup)
                 : (hasError
-                    ? this._makeup.disabledErrorMakeupFilter?.call(this._event)
-                    : this._makeup.disabledMakeupFilter?.call(this._event))) ??
-            this._makeup;
+                    ? makeup.disabledErrorMakeupFilter?.call(this._event)
+                    : makeup.disabledMakeupFilter?.call(this._event))) ??
+            makeup;
         final activeEvent = this._event.copyWith(makeup: activeMakeup);
-        activeMakeup = this._makeup.finalMakeupFilter?.call(activeEvent) ?? activeMakeup;
+        activeMakeup = makeup.finalMakeupFilter?.call(activeEvent) ?? activeMakeup;
         final titleBuilder = activeMakeup.titleBuilder;
         final leftWidgetBuilder = activeMakeup.leftWidgetBuilder;
         final rightWidgetBuilder = activeMakeup.rightWidgetBuilder;
