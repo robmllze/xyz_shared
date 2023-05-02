@@ -12,7 +12,6 @@
 - The package [xyz_generate_makeups_annotations](https://github.com/robmllze/xyz_generate_makeups_annotations)
 - The package [xyz_generate_models_annotations](https://github.com/robmllze/xyz_generate_models_annotations)
 - The package [xyz_generate_screen_access_annotations](https://github.com/robmllze/xyz_generate_screen_access_annotations)
-
 - The package [xyz_config](https://github.com/robmllze/xyz_config)
 - The package [xyz_pod](https://github.com/robmllze/xyz_pod)
 - The package [xyz_utils](https://github.com/robmllze/xyz_utils)

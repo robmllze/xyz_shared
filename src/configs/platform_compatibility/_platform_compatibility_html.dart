@@ -18,8 +18,8 @@ import 'dart:js' as js;
 
 import 'dart:convert';
 
-import 'package:webview_flutter/webview_flutter.dart' show WebViewPlatform;
-import 'package:webview_flutter_web/webview_flutter_web.dart' show WebWebViewPlatform;
+// import 'package:webview_flutter/webview_flutter.dart' show WebViewPlatform;
+// import 'package:webview_flutter_web/webview_flutter_web.dart' show WebWebViewPlatform;
 
 import '/all.dart';
 
@@ -79,7 +79,7 @@ void hDisablePop() {
 
 /// ...
 void hRegisterWebViewWebImplementation() {
-  WebViewPlatform.instance = WebWebViewPlatform();
+  //WebViewPlatform.instance = WebWebViewPlatform();
 }
 
 /// ...
