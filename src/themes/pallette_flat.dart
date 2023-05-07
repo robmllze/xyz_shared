@@ -1,11 +1,6 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 //
-// MediKinect
-//
-// Copyright Ⓒ 2023-2025, N Sanchez Medical Research Corporation
-// See LICENSE.txt for more information
-//
-// Source: http://htmlcolorcodes.com/color-charts/
+// This file is closed-sourced. See LICENSE file.
 //
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
@@ -13,6 +8,7 @@ import 'dart:ui';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+// Source: http://htmlcolorcodes.com/color-charts/
 class ColorsFlat {
   ColorsFlat._();
   // Turquoise
