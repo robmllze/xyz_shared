@@ -25,7 +25,7 @@ class MyScrollable extends StatefulWidget {
   //
   //
 
-  final MakeupScrollable makeup;
+  final MakeupScrollable? makeup;
   final Widget child;
   final Axis axis;
   final ScrollController controller;
@@ -38,7 +38,7 @@ class MyScrollable extends StatefulWidget {
 
   MyScrollable({
     Key? key,
-    required this.makeup,
+    this.makeup,
     required this.child,
     this.axis = Axis.vertical,
     this.reverse = false,
@@ -112,19 +112,20 @@ class _State extends State<MyScrollable> {
 
   @override
   Widget build(_) {
+    final makeup = this.widget.makeup ?? G.theme.scrollableDefault();
     return Padding(
-      padding: this.widget.makeup.outsidePadding,
+      padding: makeup.outsidePadding,
       child: VsScrollbar(
         controller: this.widget.controller,
-        isAlwaysShown: this.widget.makeup.isAlwaysShown,
-        style: this.widget.makeup.style,
+        isAlwaysShown: makeup.isAlwaysShown,
+        style: makeup.style,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           scrollDirection: this.widget.axis,
           controller: this.widget.controller,
           reverse: this.widget.reverse,
           child: Padding(
-            padding: this.widget.makeup.insidePadding,
+            padding: makeup.insidePadding,
             child: this.widget.child,
           ),
         ),

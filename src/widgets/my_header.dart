@@ -16,6 +16,8 @@ import '/all.dart';
     "minHeight": "double",
     "decoration": "BoxDecoration",
     "padding": "double",
+    "titleAlignment": "Alignment",
+    "childAlighment": "Alignment",
   },
 )
 class MyHeader extends StatelessWidget {
@@ -23,7 +25,7 @@ class MyHeader extends StatelessWidget {
   //
   //
 
-  final MakeupHeader makeup;
+  final MakeupHeader? makeup;
   final Widget? title;
   final void Function()? onTapDownTitle;
   final Widget? left;
@@ -45,7 +47,7 @@ class MyHeader extends StatelessWidget {
 
   const MyHeader({
     super.key,
-    required this.makeup,
+    this.makeup,
     this.title,
     this.onTapDownTitle,
     this.left,
@@ -68,7 +70,8 @@ class MyHeader extends StatelessWidget {
 
   @override
   Widget build(_) {
-    final p1 = this.makeup.padding;
+    final makeup = this.makeup ?? G.theme.headerDefault();
+    final p1 = makeup.padding;
     final p2 = 2.0 * p1;
     final Width1 = SizedBox(width: p1);
     Widget wPadded(Widget child) => Padding(padding: EdgeInsets.all(p1), child: child);
@@ -96,7 +99,7 @@ class MyHeader extends StatelessWidget {
 
     return MyHeaderBar(
       key: this.key,
-      makeup: this.makeup,
+      makeup: makeup,
       title: this.title != null ? wSection(this.title!, this.onTapDownTitle) : null,
       child: MyColumn(
         children: [

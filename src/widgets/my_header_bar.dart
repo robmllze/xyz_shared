@@ -15,7 +15,7 @@ class MyHeaderBar extends StatelessWidget {
   //
   //
 
-  final MakeupHeader makeup;
+  final MakeupHeader? makeup;
   final Widget? title;
   final Widget? child;
 
@@ -36,17 +36,24 @@ class MyHeaderBar extends StatelessWidget {
 
   @override
   Widget build(_) {
+    final makeup = this.makeup ?? G.theme.headerDefault();
     return Container(
-      color: this.makeup.makeupScreen.backgroundColor,
+      color: makeup.makeupScreen.backgroundColor,
       child: Container(
-        alignment: Alignment.center,
-        constraints: BoxConstraints(minHeight: this.makeup.minHeight),
-        decoration: this.makeup.decoration,
+        constraints: BoxConstraints(minHeight: makeup.minHeight),
+        decoration: makeup.decoration,
         child: Stack(
-          alignment: Alignment.center,
           children: [
-            if (this.child != null) this.child!,
-            if (this.title != null) this.title!,
+            if (this.child != null)
+              Align(
+                alignment: makeup.titleAlignment,
+                child: this.child!,
+              ),
+            if (this.title != null)
+              Align(
+                alignment: makeup.childAlighment,
+                child: this.title!,
+              ),
           ],
         ),
       ),

@@ -33,7 +33,7 @@ abstract class ModelEventsUtils extends XyzModel {
   //
   //
 
-  static DocumentReference<Json> refFirestore(String collection, String id) {
+  static DocumentReference<Json> documentRef(String collection, String id) {
     return G.fbFirestore.collection(collection).doc(id);
   }
 
@@ -42,7 +42,7 @@ abstract class ModelEventsUtils extends XyzModel {
   //
 
   static Future<ModelEvents?> fromFirestore(String collection, String id) async {
-    final snapshot = await refFirestore(collection, id).get();
+    final snapshot = await documentRef(collection, id).get();
     if (snapshot.exists) {
       final json = snapshot.data();
       if (json != null) {
@@ -61,7 +61,7 @@ abstract class ModelEventsUtils extends XyzModel {
     final collection = child.collection;
     final id = this.id;
     if (collection != null && id != null) {
-      final ref = ModelEventsUtils.refFirestore(collection, id);
+      final ref = ModelEventsUtils.documentRef(collection, id);
       final json = this.toJson();
       try {
         await ref.set(json, SetOptions(merge: true));
