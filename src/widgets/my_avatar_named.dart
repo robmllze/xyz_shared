@@ -43,7 +43,7 @@ class MyAvatarNamed extends StatelessWidget {
 
   @override
   Widget build(_) {
-    final makeup = this.makeup ?? makeupAvatarNamedDefault();
+    final makeup = this.makeup ?? G.theme.avatarNamedDefault();
     return GestureDetector(
       onTap: this.onTap,
       behavior: HitTestBehavior.opaque,

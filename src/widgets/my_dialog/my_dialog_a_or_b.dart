@@ -96,33 +96,41 @@ class _State extends State<MyDialogAOrB> {
             ),
             wHeight24(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyButton(
-                  label: this.widget.labelA,
-                  makeup: buttonMakeupA,
-                  onTap: () async {
-                    try {
-                      await this.widget.onTapA?.call();
-                    } catch (e) {
-                      await this.widget.onError?.call(e);
-                    }
-                    this.widget.completer.complete();
-                  },
+                Expanded(
+                  flex: 4,
+                  child: MyButton(
+                    label: this.widget.labelA,
+                    expanded: true,
+                    makeup: buttonMakeupA,
+                    onTap: () async {
+                      try {
+                        await this.widget.onTapA?.call();
+                      } catch (e) {
+                        await this.widget.onError?.call(e);
+                      }
+                      this.widget.completer.complete();
+                    },
+                  ),
                 ),
                 wWidth12(),
-                MyButton(
-                  label: this.widget.labelB,
-                  makeup: buttonMakeupB,
-                  onTap: () async {
-                    try {
-                      await this.widget.onTapB?.call();
-                    } catch (e) {
-                      await this.widget.onError?.call(e);
-                    }
-                    this.widget.completer.complete();
-                  },
+                Expanded(
+                  flex: 4,
+                  child: MyButton(
+                    label: this.widget.labelB,
+                    expanded: true,
+                    makeup: buttonMakeupB,
+                    onTap: () async {
+                      try {
+                        await this.widget.onTapB?.call();
+                      } catch (e) {
+                        await this.widget.onError?.call(e);
+                      }
+                      this.widget.completer.complete();
+                    },
+                  ),
                 ),
+                const Spacer(flex: 1),
               ],
             ),
             wHeight16(),

@@ -125,9 +125,9 @@ class _State<T> extends State<MyFieldChipList> {
   //
 
   void _onTapMultiple(String option) {
-    final value = this.widget.pValue.valueAs().contains(option);
+    final value = this.widget.pValue.value.contains(option);
     if (value) {
-      if (this.widget.pValue.valueAs().length > 1) {
+      if (this.widget.pValue.value.length > 1) {
         this.widget.pValue.update((final a) => List.of(a)..remove(option));
       }
     } else {
@@ -141,7 +141,7 @@ class _State<T> extends State<MyFieldChipList> {
   //
 
   void _onTapMultipleOrNull(String option) {
-    final value = this.widget.pValue.valueAs().contains(option);
+    final value = this.widget.pValue.value.contains(option);
     if (value) {
       this.widget.pValue.update((final a) => List.of(a)..remove(option));
     } else {
@@ -155,7 +155,7 @@ class _State<T> extends State<MyFieldChipList> {
   //
 
   void _onTapSingle(String option) {
-    final value = this.widget.pValue.valueAs().contains(option);
+    final value = this.widget.pValue.value.contains(option);
     this.widget.pValue.set([option], equals: equalsList);
     this.widget.onPressed?.call(option, !value, this.widget.pValue.valueAs());
   }
@@ -165,7 +165,7 @@ class _State<T> extends State<MyFieldChipList> {
   //
 
   void _onTapSingleOrNull(String option) {
-    final value = this.widget.pValue.valueAs().contains(option);
+    final value = this.widget.pValue.value.contains(option);
     if (value) {
       this.widget.pValue.set([], equals: equalsList);
     } else {

@@ -137,7 +137,7 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
   /// ...
   Future<void> closeDialog() async {
     if (MyScreen.pDialog.valueAs() != null) {
-      debugLog("Closing dialog ${MyScreen.pDialog.valueAs().runtimeType}");
+      debugLog("Closing dialog ${MyScreen.pDialog.value.runtimeType}");
       await Future.delayed(Duration.zero, () async {
         await MyScreen.pDialog.set(null);
       });

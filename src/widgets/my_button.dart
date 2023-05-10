@@ -99,11 +99,13 @@ class _State extends State<MyButton> {
   final _pLoadingBuilder = Pod<_FLoadingBuilder?>(null);
   Completer<void>? _loadingCompleter;
   late final _pEnabled = this.widget.pEnabled;
-
   late final _loadingBuilder = this.widget.loadingBuilder
       // Default.
       ??
       (final child, final makeup) {
+        // TODO: Calculate h using the button height instead, because currently.
+        // if there's no padding, there will be no space between the text and
+        // the loader.
         final h = makeup.padding.horizontal;
         final h025 = 0.25 * h;
         final loaderMakeup = makeup.loaderMakeup;
@@ -131,10 +133,10 @@ class _State extends State<MyButton> {
 
   @override
   Widget build(_) {
+    final enabledMakeup = this.widget.makeup ?? G.theme.buttonDefault();
     return Consumer(
       builder: (_, final ref, __) {
         final enabled = this._pEnabled?.watch(ref) ?? true;
-        final enabledMakeup = this.widget.makeup ?? G.theme.buttonDefault();
         final makeup = enabled ? enabledMakeup : enabledMakeup.disabledMakeup ?? enabledMakeup;
         final color = makeup.color;
         final shadow = makeup.shadow;
@@ -153,23 +155,29 @@ class _State extends State<MyButton> {
             child: Padding(
               padding: padding,
               child: SizedBox(
-                width: widget.expanded ? double.infinity : null,
-                child: Consumer(
-                  builder: (_, final ref, __) {
-                    final child = Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (this.widget.left != null) this.widget.left!,
-                        Text(
-                          this.widget.label,
-                          style: makeup.textStyle,
-                        ),
-                        if (this.widget.right != null) this.widget.right!,
-                      ],
-                    );
-                    return this._pLoadingBuilder.watch(ref)?.call(child, makeup) ?? child;
-                  },
+                width: widget.expanded ? double.infinity : makeup.defaultWidth,
+                height: makeup.defaultHeight,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Center(
+                    child: Consumer(
+                      builder: (_, final ref, __) {
+                        final child = Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (this.widget.left != null) this.widget.left!,
+                            Text(
+                              this.widget.label,
+                              style: makeup.textStyle,
+                            ),
+                            if (this.widget.right != null) this.widget.right!,
+                          ],
+                        );
+                        return this._pLoadingBuilder.watch(ref)?.call(child, makeup) ?? child;
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
