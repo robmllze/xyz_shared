@@ -15,7 +15,7 @@ class MyRadio2 extends StatefulWidget {
   //
   //
 
-  final MakeupRadio makeup;
+  final MakeupRadio? makeup;
   final Pod<bool> pValue;
   final Pod<bool>? pEnabled;
   final Pod<String?>? pErrorText;
@@ -28,7 +28,7 @@ class MyRadio2 extends StatefulWidget {
 
   const MyRadio2({
     Key? key,
-    required this.makeup,
+    this.makeup,
     required this.pValue,
     this.pEnabled,
     this.pErrorText,
@@ -52,7 +52,20 @@ class _State extends State<MyRadio2> {
   //
 
   @override
+  void dispose() {
+    this.widget.pEnabled?.disposeIfRequested();
+    this.widget.pErrorText?.disposeIfRequested();
+    this.widget.pValue?.disposeIfRequested();
+    super.dispose();
+  }
+
+  //
+  //
+  //
+
+  @override
   Widget build(_) {
+    final makeup = this.widget.makeup ?? G.theme.radioDefault();
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -65,12 +78,12 @@ class _State extends State<MyRadio2> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (this.widget.makeup.isChildrenBefore) ...[
+          if (makeup.isChildrenBefore) ...[
             ...this.widget.children,
-            this.widget.makeup.spacer,
+            makeup.spacer,
           ],
           SizedBox.square(
-            dimension: this.widget.makeup.size,
+            dimension: makeup.size,
             child: Consumer(
               builder: (_, final ref, __) {
                 final value = this.widget.pValue.watch(ref);
@@ -79,15 +92,15 @@ class _State extends State<MyRadio2> {
                 final error = errorText != null;
                 return MyRadio1(
                   value: value,
-                  makeup: this.widget.makeup,
+                  makeup: makeup,
                   enabled: enabled,
                   error: error,
                 );
               },
             ),
           ),
-          if (this.widget.makeup.isChildrenAfter) ...[
-            this.widget.makeup.spacer,
+          if (makeup.isChildrenAfter) ...[
+            makeup.spacer,
             ...this.widget.children,
           ],
         ],

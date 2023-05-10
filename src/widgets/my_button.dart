@@ -30,7 +30,7 @@ class MyButton extends StatefulWidget {
   //
   //
 
-  final MakeupButton makeup;
+  final MakeupButton? makeup;
   final String label;
   final bool expanded;
   final Widget? left, right;
@@ -44,8 +44,8 @@ class MyButton extends StatefulWidget {
 
   factory MyButton({
     Key? key,
-    required MakeupButton makeup,
-    required String label,
+    MakeupButton? makeup,
+    String label = "MyButton",
     bool expanded = false,
     Widget? left,
     Widget? right,
@@ -134,8 +134,8 @@ class _State extends State<MyButton> {
     return Consumer(
       builder: (_, final ref, __) {
         final enabled = this._pEnabled?.watch(ref) ?? true;
-        final makeup =
-            enabled ? this.widget.makeup : this.widget.makeup.disabledMakeup ?? this.widget.makeup;
+        final enabledMakeup = this.widget.makeup ?? G.theme.buttonDefault();
+        final makeup = enabled ? enabledMakeup : enabledMakeup.disabledMakeup ?? enabledMakeup;
         final color = makeup.color;
         final shadow = makeup.shadow;
         final borderRadius = makeup.shape.borderRadius;

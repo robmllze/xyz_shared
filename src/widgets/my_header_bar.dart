@@ -42,6 +42,7 @@ class MyHeaderBar extends StatelessWidget {
       child: Container(
         constraints: BoxConstraints(minHeight: makeup.minHeight),
         decoration: makeup.decoration,
+        alignment: Alignment.center,
         child: Stack(
           children: [
             if (this.child != null)

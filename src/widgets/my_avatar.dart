@@ -5,6 +5,7 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '/all.dart';
 
@@ -24,7 +25,7 @@ class MyAvatar extends StatefulWidget {
 
   const MyAvatar({
     Key? key,
-    required this.photoUrl,
+    this.photoUrl,
     required this.named,
   }) : super(key: key);
 
@@ -51,23 +52,30 @@ class _State extends State<MyAvatar> {
 
   @override
   void initState() {
-    final url = this.widget.photoUrl;
-    this._photo = url != null ? G.serviceAsset.asset(url) : null;
-    if (this._photo == null && url != null) {
-      G.serviceAsset.preloadNetworkImages([
-        ImageBuilder.fill(url),
-      ]).then((_) async {
+    final photoUrl = this.widget.photoUrl;
+    this._photo = photoUrl != null ? G.serviceAsset.asset(photoUrl) : null;
+    if (this._photo == null) {
+      () async {
+        final uri = photoUrl != null ? Uri.tryParse(photoUrl) : null;
+        final canLaunchUrl = (uri == null ? false : await url_launcher.canLaunchUrl(uri));
+        if (canLaunchUrl) {
+          await G.serviceAsset.preloadNetworkImages([ImageBuilder.fill(photoUrl!)]);
+          final temp = G.serviceAsset.asset(photoUrl);
+          if (temp is Widget) {
+            this.setState(() {
+              this._photo = MyAnimatedFade(
+                duration: const Duration(milliseconds: 3000),
+                layer1: this.widget.named,
+                layer2: temp,
+              );
+            });
+          }
+          return;
+        }
         this.setState(() {
-          this._photo = MyAnimatedFade(
-            duration: const Duration(milliseconds: 3000),
-            layer1: this.widget.named,
-            layer2: MyCircle(
-              diameter: this.widget.named.makeup?.diameter,
-              child: G.serviceAsset.asset(url),
-            ),
-          );
+          this._photo = this.widget.named;
         });
-      });
+      }();
     }
     super.initState();
   }
@@ -78,15 +86,14 @@ class _State extends State<MyAvatar> {
 
   @override
   Widget build(_) {
-    return this._photo != null
-        ? GestureDetector(
-            onTap: this.widget.named.onTap,
-            behavior: HitTestBehavior.opaque,
-            child: MyCircle(
-              diameter: this.widget.named.makeup?.diameter,
-              child: this._photo!,
-            ),
-          )
-        : this.widget.named;
+    final makeup = this.widget.named.makeup ?? makeupAvatarNamedDefault();
+    return GestureDetector(
+      onTap: this.widget.named.onTap,
+      behavior: HitTestBehavior.opaque,
+      child: MyCircle(
+        diameter: makeup.diameter,
+        child: this._photo is Widget ? this._photo! : this.widget.named,
+      ),
+    );
   }
 }

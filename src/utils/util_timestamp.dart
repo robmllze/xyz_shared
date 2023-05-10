@@ -8,6 +8,24 @@ import '/all.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+DateTime? getLastDate(Iterable<DateTime>? dates) {
+  return dates?.reduce(
+    (final a, final b) {
+      return a.microsecondsSinceEpoch > b.microsecondsSinceEpoch ? a : b;
+    },
+  );
+}
+
+DateTime? getFirstDate(Iterable<DateTime>? dates) {
+  return dates?.reduce(
+    (final a, final b) {
+      return a.microsecondsSinceEpoch < b.microsecondsSinceEpoch ? a : b;
+    },
+  );
+}
+
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 Timestamp? letTimestamp(dynamic input) {
   if (input == null) return null;
   if (input is Timestamp) return input;

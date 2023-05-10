@@ -102,6 +102,7 @@ class MyHeader extends StatelessWidget {
       makeup: makeup,
       title: this.title != null ? wSection(this.title!, this.onTapDownTitle) : null,
       child: MyColumn(
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (this.top != null) ...[wPadded(this.top!)],
           Row(

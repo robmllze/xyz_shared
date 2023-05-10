@@ -15,7 +15,7 @@ class MyRadioList<T> extends StatefulWidget {
   //
   //
 
-  final MakeupRadio makeup;
+  final MakeupRadio? makeup;
   final Pod pValue;
   final Pod<bool>? pEnabled;
   final Widget? title;
@@ -30,7 +30,7 @@ class MyRadioList<T> extends StatefulWidget {
 
   const MyRadioList({
     Key? key,
-    required this.makeup,
+    this.makeup,
     required this.pValue,
     this.pEnabled,
     this.options = const [],
@@ -57,6 +57,18 @@ class _State<T> extends State<MyRadioList<T>> {
 
   Future<void> Function(T)? _onTap;
   late final _pValue = this.widget.pValue.toDynamic..value ??= <T>[];
+  late final _pEnabled = this.widget.pEnabled;
+
+  //
+  //
+  //
+
+  @override
+  void dispose() {
+    this._pValue.disposeIfRequested();
+    this._pEnabled?.disposeIfRequested();
+    super.dispose();
+  }
 
   //
   //
@@ -87,6 +99,7 @@ class _State<T> extends State<MyRadioList<T>> {
 
   @override
   Widget build(_) {
+    final makeup = this.widget.makeup ?? G.theme.radioDefault();
     return MyColumn(
       children: [
         if (this.widget.title != null) ...[
@@ -103,9 +116,9 @@ class _State<T> extends State<MyRadioList<T>> {
               children: this.widget.options.map((final option) {
                 final contains = this._pValue.value.contains(option);
                 return MyRadio2(
-                  pValue: Pod<bool>.temp(contains), // TODO: DISPOSE!!!
-                  pEnabled: this.widget.pEnabled,
-                  makeup: this.widget.makeup,
+                  pValue: Pod<bool>.temp(contains),
+                  pEnabled: this._pEnabled,
+                  makeup: makeup,
                   onTap: (_) async {
                     await this._onTap?.call(option);
                   },
