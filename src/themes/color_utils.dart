@@ -49,5 +49,5 @@ Color generateAvatarColorFromDisplayName(String displayName) {
   // Generate a random hue value between 0 and 359
   final hue = random.nextDouble() * 360.0;
   // Create a color with the desired saturation, lightness, and alpha values
-  return HSLColor.fromAHSL(1.0, hue, 0.4, 0.75).toColor();
+  return HSLColor.fromAHSL(1.0, hue, 0.35, 0.7).toColor();
 }
