@@ -71,7 +71,7 @@ class MyButton extends StatefulWidget {
 
   const MyButton.loading({
     Key? key,
-    required this.makeup,
+    this.makeup,
     required this.label,
     this.expanded = false,
     this.left,
@@ -103,24 +103,19 @@ class _State extends State<MyButton> {
       // Default.
       ??
       (final child, final makeup) {
-        // TODO: Calculate h using the button height instead, because currently.
-        // if there's no padding, there will be no space between the text and
-        // the loader.
-        final h = makeup.padding.horizontal;
-        final h025 = 0.25 * h;
         final loaderMakeup = makeup.loaderMakeup;
-        final fontSize = makeup.textStyle.fontSize;
+        final fontSize = makeup.textStyle.fontSize ?? $12;
         return Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (this.widget.expanded) SizedBox(width: h + (fontSize ?? 0.0)),
+            if (this.widget.expanded) SizedBox(width: 1.5 * fontSize),
             child,
-            SizedBox(width: h025),
+            SizedBox(width: 0.5 * fontSize),
             MyLoader(
               makeup: loaderMakeup.copyWith(
                 size: fontSize,
-                strokeWidth: 0.16 * (fontSize ?? $8),
+                strokeWidth: 0.16 * fontSize,
               ),
             ),
           ],
