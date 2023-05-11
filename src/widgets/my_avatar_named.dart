@@ -24,6 +24,7 @@ class MyAvatarNamed extends StatelessWidget {
 
   final MakeupAvatarNamed? makeup;
   final String? name;
+  final bool usePersonalColor;
   final void Function()? onTap;
 
   //
@@ -34,6 +35,7 @@ class MyAvatarNamed extends StatelessWidget {
     Key? key,
     this.makeup,
     this.name,
+    this.usePersonalColor = true,
     this.onTap,
   }) : super(key: key);
 
@@ -52,7 +54,9 @@ class MyAvatarNamed extends StatelessWidget {
         width: makeup.diameter,
         height: makeup.diameter,
         decoration: BoxDecoration(
-          color: makeup.color,
+          color: this.usePersonalColor
+              ? getRandomColorFromHashCode((name ?? "??").hashCode)
+              : makeup.color,
           shape: BoxShape.circle,
         ),
         child: FittedBox(

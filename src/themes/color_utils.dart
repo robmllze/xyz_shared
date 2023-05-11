@@ -4,6 +4,8 @@
 //
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
+import 'dart:math' as math;
+
 import 'package:flutter/painting.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -40,4 +42,12 @@ extension ColorUtils on Color {
     final darkened = hsl.withLightness(hsl.lightness * (1 - amount));
     return darkened.toColor();
   }
+}
+
+Color getRandomColorFromHashCode(int hashCode) {
+  final random = math.Random(hashCode);
+  // Generate a random hue value between 0 and 359
+  final hue = random.nextDouble() * 360.0;
+  // Create a color with the desired saturation, lightness, and alpha values
+  return HSLColor.fromAHSL(1.0, hue, 0.5, 0.5).toColor();
 }
