@@ -55,7 +55,7 @@ class MyAvatarNamed extends StatelessWidget {
         height: makeup.diameter,
         decoration: BoxDecoration(
           color: this.usePersonalColor
-              ? getRandomColorFromHashCode((name ?? "??").hashCode)
+              ? generateAvatarColorFromDisplayName(name ?? "??")
               : makeup.color,
           shape: BoxShape.circle,
         ),

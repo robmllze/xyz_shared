@@ -44,10 +44,10 @@ extension ColorUtils on Color {
   }
 }
 
-Color getRandomColorFromHashCode(int hashCode) {
-  final random = math.Random(hashCode);
+Color generateAvatarColorFromDisplayName(String displayName) {
+  final random = math.Random(displayName.hashCode);
   // Generate a random hue value between 0 and 359
   final hue = random.nextDouble() * 360.0;
   // Create a color with the desired saturation, lightness, and alpha values
-  return HSLColor.fromAHSL(1.0, hue, 0.5, 0.5).toColor();
+  return HSLColor.fromAHSL(1.0, hue, 0.4, 0.75).toColor();
 }
