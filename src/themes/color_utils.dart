@@ -44,8 +44,8 @@ extension ColorUtils on Color {
   }
 }
 
-Color generateAvatarColorFromDisplayName(String displayName) {
-  final random = math.Random(displayName.hashCode);
+Color generateAvatarColorFromName(String name) {
+  final random = math.Random(name.hashCode);
   // Generate a random hue value between 0 and 359
   final hue = random.nextDouble() * 360.0;
   // Create a color with the desired saturation, lightness, and alpha values

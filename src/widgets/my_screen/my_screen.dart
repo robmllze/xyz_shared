@@ -19,7 +19,7 @@ part '_my_screen_timer.dart';
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 @GenerateMakeups(
-  names: {"overlay", "clear"},
+  names: {},
   parameters: {
     "transitionDuration": "Duration",
     "backgroundColor": "Color",
