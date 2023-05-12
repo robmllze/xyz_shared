@@ -17,7 +17,7 @@ class MyAnimatedSlide extends StatefulWidget {
   final Color color;
   final Duration duration;
   final Curve curve;
-  final MyAnimatedSlideDirection direction;
+  final MyAnimatedSlide_Direction direction;
   final double extent;
 
   //
@@ -28,7 +28,7 @@ class MyAnimatedSlide extends StatefulWidget {
     Key? key,
     this.child,
     this.color = Colors.transparent,
-    this.direction = MyAnimatedSlideDirection.BOTTOM_TO_TOP,
+    this.direction = MyAnimatedSlide_Direction.BOTTOM_TO_TOP,
     this.curve = Curves.easeInOutCirc,
     this.duration = const Duration(milliseconds: 250),
     this.extent = 0.25,
@@ -62,14 +62,14 @@ class _State extends State<MyAnimatedSlide> with SingleTickerProviderStateMixin 
 
   late final _animation = Tween<Offset>(
     begin: Offset(
-      this.widget.direction == MyAnimatedSlideDirection.RIGHT_TO_LEFT
+      this.widget.direction == MyAnimatedSlide_Direction.RIGHT_TO_LEFT
           ? this._extent
-          : this.widget.direction == MyAnimatedSlideDirection.LEFT_TO_RIGHT
+          : this.widget.direction == MyAnimatedSlide_Direction.LEFT_TO_RIGHT
               ? -this._extent
               : 0.0,
-      this.widget.direction == MyAnimatedSlideDirection.BOTTOM_TO_TOP
+      this.widget.direction == MyAnimatedSlide_Direction.BOTTOM_TO_TOP
           ? this._extent
-          : this.widget.direction == MyAnimatedSlideDirection.TOP_TO_BOTTOM
+          : this.widget.direction == MyAnimatedSlide_Direction.TOP_TO_BOTTOM
               ? -this._extent
               : 0.0,
     ),
@@ -109,7 +109,7 @@ class _State extends State<MyAnimatedSlide> with SingleTickerProviderStateMixin 
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-enum MyAnimatedSlideDirection {
+enum MyAnimatedSlide_Direction {
   LEFT_TO_RIGHT,
   RIGHT_TO_LEFT,
   BOTTOM_TO_TOP,

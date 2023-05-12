@@ -9,6 +9,8 @@ import 'dart:ui' show Color;
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 abstract class Palette {
+  const Palette();
+
   Color get neutral;
   Color get neutral50;
   Color get neutral100;
@@ -93,10 +95,14 @@ abstract class Palette {
   Color get contrast800;
   Color get contrast900;
 
-  Color get background;
-  Color get foreground;
+  Color get light => neutral50;
+  Color get medium => neutral400;
+  Color get heavy => neutral900;
 
-  Color get apple;
-  Color get facebook;
-  Color get google;
+  Color get background => contrast0;
+  Color get foreground => contrast900;
+
+  Color get apple => const Color(0xff000000);
+  Color get facebook => const Color(0xff1877f2);
+  Color get google => const Color(0xffdd4b39);
 }
