@@ -72,7 +72,7 @@ class MyRouteInformationParser extends RouteInformationParser<MyRouteConfigurati
   RouteInformation? restoreRouteInformation(
     MyRouteConfiguration configuration,
   ) {
-    if (G.kDeveloperMode) {
+    if (kDeveloperMode) {
       // Enable full URLs to be displayed in browser.
       final location = configuration.uri?.toString();
       debugLog("Parsing route configuration to URI: $location");

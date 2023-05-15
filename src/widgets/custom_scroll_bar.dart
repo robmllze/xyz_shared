@@ -65,7 +65,7 @@ class _CustomScrollBarState extends State<CustomScrollBar> {
               child: GestureDetector(
                 onVerticalDragStart: (_) => _resetTimer(),
                 onVerticalDragUpdate: (DragUpdateDetails details) {
-                  double offset = details.delta.dy / context.size!.height;
+                  var offset = details.delta.dy / context.size!.height;
                   widget.scrollController.jumpTo(
                     widget.scrollController.offset +
                         offset * widget.scrollController.position.maxScrollExtent,

@@ -91,7 +91,7 @@ class MyHeader extends StatelessWidget {
       return onTap != null
           ? GestureDetector(
               behavior: HitTestBehavior.translucent,
-              onTapDown: (_) => onTap!(),
+              onTapDown: (_) => onTap(),
               child: constrainedChild,
             )
           : constrainedChild;

@@ -42,7 +42,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   MyRouteConfiguration? _currentConfiguration;
 
   MyRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
-    if (!G.kDeveloperMode) {
+    if (!kDeveloperMode) {
       // Disable browser "<-" and "->" buttons
       hDisablePop();
     }
@@ -207,7 +207,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
 
   @override
   Future<void> setNewRoutePath(MyRouteConfiguration configuration) async {
-    if (!G.kDeveloperMode) {
+    if (!kDeveloperMode) {
       // Disable browser "<-" and "->" buttons.
       hPushState("/");
     }

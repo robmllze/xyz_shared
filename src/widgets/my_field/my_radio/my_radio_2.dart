@@ -55,7 +55,7 @@ class _State extends State<MyRadio2> {
   void dispose() {
     this.widget.pEnabled?.disposeIfRequested();
     this.widget.pErrorText?.disposeIfRequested();
-    this.widget.pValue?.disposeIfRequested();
+    this.widget.pValue.disposeIfRequested();
     super.dispose();
   }
 

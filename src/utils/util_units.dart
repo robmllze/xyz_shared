@@ -169,10 +169,7 @@ class Units {
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 extension DoubleDotScaled on double {
-  double get scaled {
-    final unit = G.pUnits.value?.factor;
-    return this * (unit ?? 1.0);
-  }
+  double get scaled => this * G.pUnits.value.factor;
 }
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░

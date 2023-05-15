@@ -53,17 +53,17 @@ class ModelEvents extends ModelEventsUtils {
   /// Value corresponding to the key `registry` or [K_REGISTRY].
   Map<Timestamp, ModelEventData>? registry;
 
-  /// Key corresponding to the value `timesLastDelivered`.
-  static const K_TIMES_LAST_DELIVERED = "times_last_delivered";
+  /// Key corresponding to the value `whenLastDelivered`.
+  static const K_WHEN_LAST_DELIVERED = "when_last_delivered";
 
-  /// Value corresponding to the key `times_last_delivered` or [K_TIMES_LAST_DELIVERED].
-  Map<String, Timestamp>? timesLastDelivered;
+  /// Value corresponding to the key `when_last_delivered` or [K_WHEN_LAST_DELIVERED].
+  Map<String, Timestamp>? whenLastDelivered;
 
-  /// Key corresponding to the value `timesLastRead`.
-  static const K_TIMES_LAST_READ = "times_last_read";
+  /// Key corresponding to the value `whenLastRead`.
+  static const K_WHEN_LAST_READ = "when_last_read";
 
-  /// Value corresponding to the key `times_last_read` or [K_TIMES_LAST_READ].
-  Map<String, Timestamp>? timesLastRead;
+  /// Value corresponding to the key `when_last_read` or [K_WHEN_LAST_READ].
+  Map<String, Timestamp>? whenLastRead;
 
   //
   //
@@ -79,8 +79,8 @@ class ModelEvents extends ModelEventsUtils {
     this.keysUnread,
     this.partTotal,
     this.registry,
-    this.timesLastDelivered,
-    this.timesLastRead,
+    this.whenLastDelivered,
+    this.whenLastRead,
   }) : super._() {
     super.id = id;
     super.args = args;
@@ -163,7 +163,7 @@ class ModelEvents extends ModelEventsUtils {
             )
             .nullsRemoved()
             .nullIfEmpty(),
-        timesLastDelivered: letAs<Map>(json[K_TIMES_LAST_DELIVERED])
+        whenLastDelivered: letAs<Map>(json[K_WHEN_LAST_DELIVERED])
             ?.map(
               (final p0, final p1) => MapEntry(
                 (p0?.toString()),
@@ -177,7 +177,7 @@ class ModelEvents extends ModelEventsUtils {
             )
             .nullsRemoved()
             .nullIfEmpty(),
-        timesLastRead: letAs<Map>(json[K_TIMES_LAST_READ])
+        whenLastRead: letAs<Map>(json[K_WHEN_LAST_READ])
             ?.map(
               (final p0, final p1) => MapEntry(
                 (p0?.toString()),
@@ -253,7 +253,7 @@ class ModelEvents extends ModelEventsUtils {
               )
               .nullsRemoved()
               .nullIfEmpty(),
-          K_TIMES_LAST_DELIVERED: timesLastDelivered
+          K_WHEN_LAST_DELIVERED: whenLastDelivered
               ?.map(
                 (final p0, final p1) => MapEntry(
                   p0.nullIfEmpty(),
@@ -262,7 +262,7 @@ class ModelEvents extends ModelEventsUtils {
               )
               .nullsRemoved()
               .nullIfEmpty(),
-          K_TIMES_LAST_READ: timesLastRead
+          K_WHEN_LAST_READ: whenLastRead
               ?.map(
                 (final p0, final p1) => MapEntry(
                   p0.nullIfEmpty(),
@@ -297,8 +297,8 @@ class ModelEvents extends ModelEventsUtils {
         keysUnread: other.keysUnread ?? this.keysUnread,
         partTotal: other.partTotal ?? this.partTotal,
         registry: other.registry ?? this.registry,
-        timesLastDelivered: other.timesLastDelivered ?? this.timesLastDelivered,
-        timesLastRead: other.timesLastRead ?? this.timesLastRead,
+        whenLastDelivered: other.whenLastDelivered ?? this.whenLastDelivered,
+        whenLastRead: other.whenLastRead ?? this.whenLastRead,
       ) as T;
     }
     throw Exception(
@@ -346,11 +346,11 @@ class ModelEvents extends ModelEventsUtils {
       if (other.registry != null) {
         this.registry = other.registry;
       }
-      if (other.timesLastDelivered != null) {
-        this.timesLastDelivered = other.timesLastDelivered;
+      if (other.whenLastDelivered != null) {
+        this.whenLastDelivered = other.whenLastDelivered;
       }
-      if (other.timesLastRead != null) {
-        this.timesLastRead = other.timesLastRead;
+      if (other.whenLastRead != null) {
+        this.whenLastRead = other.whenLastRead;
       }
       return;
     }
