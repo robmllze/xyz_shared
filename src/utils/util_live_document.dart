@@ -42,11 +42,11 @@ class LiveDocument<T> {
   /// The `fromMapper` and `toMapper` functions are used to map between JSON
   /// objects and `T` objects. The `equals` function is used to compare two `T`
   /// objects for equality.
-  static LiveDocument<T> start<T>({
+  static Future<LiveDocument<T>> start<T>({
     required DocumentReference<Json> ref,
     required T Function(Json) fromMapper,
     required Json Function(T) toMapper,
-  }) {
+  }) async {
     final pValue = Pod<T>(fromMapper({}));
     final instance = LiveDocument<T>._(
       ref: ref,
@@ -54,6 +54,10 @@ class LiveDocument<T> {
       fromMapper: fromMapper,
       pValue: pValue,
     );
+
+    try {
+      await instance._refetch();
+    } catch (_) {}
 
     // Listen for changes to the `Pod` instance and save the value to the
     // Firestore document.
@@ -73,6 +77,15 @@ class LiveDocument<T> {
     return instance;
   }
 
+  /// Refetches the Firestore document and updates the value of [pValue].
+  Future<void> _refetch() async {
+    final shapshot = await ref.get();
+    final data = shapshot.data();
+    if (data != null) {
+      await this.pValue.set(fromMapper(data));
+    }
+  }
+
   /// Saves the current value of the document to Firestore and returns the
   /// same value.
   Future<T> save(_, T data) async {
@@ -89,14 +102,14 @@ class LiveDocument<T> {
 
   /// Stops listening for changes to the Firestore document and disposes the
   /// `Pod` instance.
-  Future<void> stop() async {
+  Future<void> dispose() async {
     await this._stream.cancel();
     await this.pValue.dispose();
   }
 
-  /// Calls [stop] then [delete].
+  /// Calls [dispose] then [delete].
   Future<void> purge() async {
-    await this.stop();
+    await this.dispose();
     await this.delete();
   }
 }

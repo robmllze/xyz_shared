@@ -17,10 +17,27 @@ class MyRouteInformationParser extends RouteInformationParser<MyRouteConfigurati
 
   /// Where the app may locate to as soon as possible. This is the location
   /// used to open the app, e.g. "/", "home" or "/home?some_query_parameter=1"
-  String _locationRequested = "/";
-  String get locationRequested => this._locationRequested;
+  String _reqLocation = "/";
+  String get reqLocation => this._reqLocation;
 
-  /// Where the app will locate to by default, unless [locationRequested] is
+  // TODO: Describe...
+  String? get reqParam_sharedBy => this._decodedParam<String>("shared_by");
+  // TODO: Describe...
+  Uri? get reqUri => this._reqUri;
+  // TODO: Describe...
+  Uri? _reqUri;
+  // TODO: Describe...
+  Map<String, String>? get reqParams => this._reqUri?.queryParameters;
+  // TODO: Describe...
+  T? _decodedParam<T>(String key) {
+    final encoded = this.reqParams?[key];
+    if (encoded != null) {
+      return let<T>(Uri.decodeComponent(encoded));
+    }
+    return null;
+  }
+
+  /// Where the app will locate to by default, unless [reqLocation] is
   /// one of [locationsToOverrideDefault].
   String? _locationDefault;
   String? get locationDefault => this._locationDefault;
@@ -54,9 +71,10 @@ class MyRouteInformationParser extends RouteInformationParser<MyRouteConfigurati
     // 1. Get the input location.
     final input = routeInformation.location ?? "/";
     // 2. Save the requested location for later use.
-    this._locationRequested = input;
+    this._reqLocation = input;
+    this._reqUri = Uri.tryParse(input);
     // 3. Determine the output location based on the input location.
-    final output = this._determineOutputLocation(this._locationRequested);
+    final output = this._determineOutputLocation(this._reqLocation);
     // 4. Call location callbacks.
     /*await*/ this._handleCallbacks(output);
     debugLog("Parsing URI to route configuration: $output");

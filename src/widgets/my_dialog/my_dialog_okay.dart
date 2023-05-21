@@ -94,7 +94,7 @@ class _State extends State<MyDialogOkay> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                MyButton(
+                MyButton.loading(
                   label: this.widget.labelOkay,
                   makeup: buttonMakeup,
                   onTap: () async {

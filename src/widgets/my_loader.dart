@@ -25,7 +25,7 @@ class MyLoader extends StatelessWidget {
   //
   //
 
-  final MakeupLoader makeup;
+  final MakeupLoader? makeup;
 
   //
   //
@@ -33,7 +33,7 @@ class MyLoader extends StatelessWidget {
 
   const MyLoader({
     Key? key,
-    required this.makeup,
+    this.makeup,
   }) : super(key: key);
 
   //
@@ -42,14 +42,15 @@ class MyLoader extends StatelessWidget {
 
   @override
   Widget build(_) {
+    final makeup = this.makeup ?? G.theme.loaderDefault();
     return Center(
       child: SizedBox.square(
-        dimension: this.makeup.size,
+        dimension: makeup.size,
         child: CircularProgressIndicator(
-          color: this.makeup.color,
-          backgroundColor: this.makeup.backgroundColor,
-          valueColor: this.makeup.valueColor,
-          strokeWidth: this.makeup.strokeWidth ?? $4,
+          color: makeup.color,
+          backgroundColor: makeup.backgroundColor,
+          valueColor: makeup.valueColor,
+          strokeWidth: makeup.strokeWidth ?? $4,
         ),
       ),
     );

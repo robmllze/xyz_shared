@@ -99,7 +99,7 @@ class _State extends State<MyDialogAOrB> {
               children: [
                 Expanded(
                   flex: 4,
-                  child: MyButton(
+                  child: MyButton.loading(
                     label: this.widget.labelA,
                     expanded: true,
                     makeup: buttonMakeupA,
@@ -116,7 +116,7 @@ class _State extends State<MyDialogAOrB> {
                 wWidth12(),
                 Expanded(
                   flex: 4,
-                  child: MyButton(
+                  child: MyButton.loading(
                     label: this.widget.labelB,
                     expanded: true,
                     makeup: buttonMakeupB,

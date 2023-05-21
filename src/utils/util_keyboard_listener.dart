@@ -5,8 +5,7 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
 import 'dart:async';
-
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
@@ -15,18 +14,21 @@ class MyKeyboardListener {
   //
   //
 
+  final FlutterView _view;
   final void Function()? onShow, onHide;
   Timer? _timer;
-  bool _calledOnShow = false, _calledOnHide = false;
+  bool _didCallOnShow = false, _didCallOnHide = false;
 
   //
   //
   //
 
   MyKeyboardListener({
+    FlutterView? view,
     this.onShow,
     this.onHide,
-  });
+  }) : this._view = view ??
+            PlatformDispatcher.instance.views.first; // Or use WidgetsBinding.instance.window
 
   //
   //
@@ -34,17 +36,17 @@ class MyKeyboardListener {
 
   void listenStart() {
     this._timer = Timer.periodic(Duration.zero, (_) {
-      if (WidgetsBinding.instance.window.viewInsets.bottom > 0.0) {
-        if (this._calledOnShow == false) {
+      if (this._view.viewInsets.bottom > 0.0) {
+        if (this._didCallOnShow == false) {
           this.onShow?.call();
-          this._calledOnShow = true;
-          this._calledOnHide = false;
+          this._didCallOnShow = true;
+          this._didCallOnHide = false;
         }
       } else {
-        if (this._calledOnHide == false) {
+        if (this._didCallOnHide == false) {
           this.onHide?.call();
-          this._calledOnHide = true;
-          this._calledOnShow = false;
+          this._didCallOnHide = true;
+          this._didCallOnShow = false;
         }
       }
     });
