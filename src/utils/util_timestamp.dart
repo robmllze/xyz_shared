@@ -9,7 +9,7 @@ import '/all.dart';
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 DateTime? getLastDate(Iterable<DateTime>? dates) {
-  return dates?.reduce(
+  return dates?.tryReduce(
     (final a, final b) {
       return a.microsecondsSinceEpoch > b.microsecondsSinceEpoch ? a : b;
     },
@@ -17,7 +17,7 @@ DateTime? getLastDate(Iterable<DateTime>? dates) {
 }
 
 DateTime? getFirstDate(Iterable<DateTime>? dates) {
-  return dates?.reduce(
+  return dates?.tryReduce(
     (final a, final b) {
       return a.microsecondsSinceEpoch < b.microsecondsSinceEpoch ? a : b;
     },
