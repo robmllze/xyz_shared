@@ -117,8 +117,8 @@ MyScreen? configurationToScreen(MyRouteConfiguration configuration) {
     final screen = screenMaker.call(
       configuration,
       G.isVerified,
-      G.isSignedIn,
-      G.isSignedOut,
+      G.isLoggedIn,
+      G.isLoggedOut,
     );
     if (screen != null) {
       return screen;
