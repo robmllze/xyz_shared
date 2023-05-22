@@ -21,16 +21,16 @@ class MyRouteInformationParser extends RouteInformationParser<MyRouteConfigurati
   String get reqLocation => this._reqLocation;
 
   // TODO: Describe...
-  String? get reqParam_sharedBy => this._decodedParam<String>("shared_by");
+  String? get requestedSharerEmail => this._decodedParameter<String>("sharer_email");
   // TODO: Describe...
-  Uri? get reqUri => this._reqUri;
+  Uri? get requestedUri => this._requestedUri;
   // TODO: Describe...
-  Uri? _reqUri;
+  Uri? _requestedUri;
   // TODO: Describe...
-  Map<String, String>? get reqParams => this._reqUri?.queryParameters;
+  Map<String, String>? get requestedParameters => this._requestedUri?.queryParameters;
   // TODO: Describe...
-  T? _decodedParam<T>(String key) {
-    final encoded = this.reqParams?[key];
+  T? _decodedParameter<T>(String key) {
+    final encoded = this.requestedParameters?[key];
     if (encoded != null) {
       return let<T>(Uri.decodeComponent(encoded));
     }
@@ -72,7 +72,7 @@ class MyRouteInformationParser extends RouteInformationParser<MyRouteConfigurati
     final input = routeInformation.location ?? "/";
     // 2. Save the requested location for later use.
     this._reqLocation = input;
-    this._reqUri = Uri.tryParse(input);
+    this._requestedUri = Uri.tryParse(input);
     // 3. Determine the output location based on the input location.
     final output = this._determineOutputLocation(this._reqLocation);
     // 4. Call location callbacks.

@@ -90,13 +90,13 @@ class MyMessageBubble extends StatelessWidget {
   Widget build(_) {
     if (message.isEmpty) return const SizedBox();
     return Container(
-      constraints: BoxConstraints(minWidth: 50.0.scaled),
+      constraints: BoxConstraints(minWidth: $48),
       decoration: BoxDecoration(
         color: this.color,
-        borderRadius: BorderRadius.circular(7.0.scaled),
+        borderRadius: BorderRadius.circular($8),
       ),
       child: Padding(
-        padding: EdgeInsets.all(7.0.scaled),
+        padding: EdgeInsets.all($8),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -114,7 +114,7 @@ class MyMessageBubble extends StatelessWidget {
                 this.message,
                 style: textStyle,
               ),
-            SizedBox(height: 3.0.scaled),
+            SizedBox(height: $4),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -122,23 +122,23 @@ class MyMessageBubble extends StatelessWidget {
                 //   Text(
                 //     DateFormat.jm(G.serviceLocale.code).format(dateSent!),
                 //     style: textStyle?.copyWith(
-                //       fontSize: 8.0.scaled,
+                //       fontSize: $8,
                 //       color: textStyle?.color!.withOpacity(0.75),
                 //     ),
                 //   ),
                 if (dateRead != null) ...[
-                  SizedBox(width: 2.0.scaled),
+                  SizedBox(width: $2),
                   Icon(
                     Icons.done_all,
-                    color: G.theme.palette.contrast0,
-                    size: 10.0.scaled,
+                    color: textStyle?.color ?? G.theme.palette.background,
+                    size: $12,
                   ),
                 ] else if (dateDelivered != null) ...[
-                  SizedBox(width: 2.0.scaled),
+                  SizedBox(width: $2),
                   Icon(
                     Icons.done,
-                    color: G.theme.palette.contrast0,
-                    size: 10.0.scaled,
+                    color: textStyle?.color ?? G.theme.palette.background,
+                    size: $12,
                   ),
                 ],
               ],
