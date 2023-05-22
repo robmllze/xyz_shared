@@ -17,7 +17,8 @@ import 'package:flutter/material.dart';
 @GenerateMakeups(
   parameters: {
     "overlayColor": "Color",
-    "closeIconColor": "Color",
+    "closeIconBackroundColor": "Color",
+    "closeIconForegroundColor": "Color",
     "decoration": "BoxDecoration",
     "messageTextStyle": "TextStyle",
     "titleTextStyle": "TextStyle",

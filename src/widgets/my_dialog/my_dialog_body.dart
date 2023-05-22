@@ -76,13 +76,13 @@ class _State extends State<MyDialogBody> {
                           alignment: Alignment.topRight,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: makeup.closeIconColor.withOpacity(0.2),
+                              color: makeup.closeIconBackroundColor,
                               borderRadius: makeup.decoration.borderRadius,
                             ),
                             child: MyButtonIcon(
                               icon: Icon(
                                 Icons.close,
-                                color: makeup.closeIconColor,
+                                color: makeup.closeIconForegroundColor,
                                 size: $16,
                               ),
                               onTap: onClose,
