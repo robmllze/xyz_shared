@@ -39,7 +39,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   }
 
   Future<void> replaceWithFacade() async {
-    return G.router.replace(
+    await G.router.replace(
       ScreenFacadeConfiguration(
         capturedScreenImage: await _captureScreenImage(),
       ),
@@ -47,7 +47,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   }
 
   Future<void> pushFacade() async {
-    return G.router.push(
+    await G.router.push(
       ScreenFacadeConfiguration(
         capturedScreenImage: await _captureScreenImage(),
       ),
@@ -171,7 +171,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   //
 
   Future<bool> _pop() async {
-    await this._currentPage?.screen.onScreenPop();
+    await this.currentPage?.screen.onScreenPop();
     if (this._stack.isNotEmpty) {
       this._stack.removeLast();
       return this._stack.isNotEmpty;
@@ -377,7 +377,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   //
   //
 
-  MyScreenPage? get _currentPage => this._stack.isNotEmpty ? this._stack.last : null;
+  MyScreenPage? get currentPage => this._stack.isNotEmpty ? this._stack.last : null;
 
   //
   //
@@ -420,7 +420,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
 
   @override
   Widget build(final context) {
-    final page = this._currentPage ?? ScreenEmpty(ScreenEmptyConfiguration()).toPage();
+    final page = this.currentPage ?? ScreenEmpty(ScreenEmptyConfiguration()).toPage();
     final screen = page.screen;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       screen.onPostScreenBuild(context);
@@ -449,7 +449,8 @@ class MyFacadeRepaintBoundary extends StatelessWidget {
   @override
   Widget build(_) {
     return RepaintBoundary(
-      key: router._facadeKey,
+      key: this.router._facadeKey,
+      child: this.child,
     );
   }
 }

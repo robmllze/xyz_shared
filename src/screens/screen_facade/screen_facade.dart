@@ -36,5 +36,7 @@ class ScreenFacade extends MyScreen {
 class _State extends MyScreenState<ScreenFacade, ScreenFacadeConfiguration,
     MyScreenLogic<ScreenFacadeConfiguration>> {
   @override
-  Widget body(_) => RawImage(image: this.configuration.capturedScreenImage);
+  Widget body(_) {
+    return RawImage(image: this.configuration.capturedScreenImage);
+  }
 }
