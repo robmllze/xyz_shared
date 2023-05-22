@@ -5,6 +5,8 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show RenderRepaintBoundary;
+import 'dart:ui' as ui show Image;
 
 import '/all.dart';
 
@@ -23,6 +25,34 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   //
 
   static const REC = Rec("MyRouterDelegate");
+
+  //
+  //
+  //
+
+  final _facadeKey = GlobalKey();
+
+  Future<ui.Image> _captureScreenImage() async {
+    final boundary = this._facadeKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+    final image = await boundary.toImage();
+    return image;
+  }
+
+  Future<void> replaceWithFacade() async {
+    return G.router.replace(
+      ScreenFacadeConfiguration(
+        capturedScreenImage: await _captureScreenImage(),
+      ),
+    );
+  }
+
+  Future<void> pushFacade() async {
+    return G.router.push(
+      ScreenFacadeConfiguration(
+        capturedScreenImage: await _captureScreenImage(),
+      ),
+    );
+  }
 
   //
   //
@@ -401,6 +431,25 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
       title: title ?? screen.title,
       color: screen.makeup.titleColor,
       child: this._navigator(page),
+    );
+  }
+}
+
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+class MyFacadeRepaintBoundary extends StatelessWidget {
+  final MyRouterDelegate router;
+  final Widget? child;
+  const MyFacadeRepaintBoundary({
+    super.key,
+    required this.router,
+    this.child,
+  });
+
+  @override
+  Widget build(_) {
+    return RepaintBoundary(
+      key: router._facadeKey,
     );
   }
 }
