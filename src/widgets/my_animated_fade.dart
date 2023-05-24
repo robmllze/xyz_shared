@@ -19,6 +19,7 @@ class MyAnimatedFade extends StatefulWidget {
   final Curve curve;
   final Function()? onComplete;
   final double begin;
+  final double end;
 
   //
   //
@@ -31,6 +32,7 @@ class MyAnimatedFade extends StatefulWidget {
     this.duration = const Duration(milliseconds: 250),
     this.curve = Curves.linear,
     this.begin = 0.0,
+    this.end = 1.0,
     this.onComplete,
   }) : super(key: key);
 
@@ -60,7 +62,7 @@ class _State extends State<MyAnimatedFade> with SingleTickerProviderStateMixin {
 
   late final _animation = Tween<double>(
     begin: this.widget.begin,
-    end: 1.0,
+    end: this.widget.end,
   ).animate(
     CurvedAnimation(
       parent: this._controller,

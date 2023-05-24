@@ -1,36 +1,24 @@
+// ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+//
+// This file is closed-sourced. See LICENSE file.
+//
+// ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '/all.dart';
 
-class ExpandedHitTestArea extends SingleChildRenderObjectWidget {
-  final VoidCallback? onTap;
-  final Size? detectionSize;
-  final Size maxExpansion;
-  const ExpandedHitTestArea({
-    super.key,
-    super.child,
-    this.detectionSize,
-    this.maxExpansion = const Size.square(double.maxFinite),
-    this.onTap,
-  });
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-  @override
-  RenderObject createRenderObject(BuildContext context) => RenderExpandedHitTestArea(
-        onTap: onTap,
-        detectionSize: detectionSize,
-        maxExpansion: maxExpansion,
-      );
-}
-
-class ExpandedTapDetector extends StatefulWidget {
+class MyTapDetector extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
   final Size? detectionSize;
   final Size detectionBorder;
 
-  const ExpandedTapDetector({
+  const MyTapDetector({
     super.key,
     this.detectionSize,
     this.detectionBorder = const Size.square(double.maxFinite),
@@ -39,10 +27,12 @@ class ExpandedTapDetector extends StatefulWidget {
   });
 
   @override
-  State<ExpandedTapDetector> createState() => _ExpandedTapDetectorState();
+  State<MyTapDetector> createState() => _MyTapDetectorState();
 }
 
-class _ExpandedTapDetectorState extends State<ExpandedTapDetector> {
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+class _MyTapDetectorState extends State<MyTapDetector> {
   Size _childSize = Size.zero;
   @override
   Widget build(_) {
@@ -57,7 +47,7 @@ class _ExpandedTapDetectorState extends State<ExpandedTapDetector> {
       ),
       child: Center(
         child: ExpandedHitTestArea(
-          maxExpansion: this.widget.detectionBorder,
+          detectionBorder: this.widget.detectionBorder,
           onTap: this.widget.onTap,
           child: MyWidgetCalculator(
             child: this.widget.child,
@@ -73,6 +63,30 @@ class _ExpandedTapDetectorState extends State<ExpandedTapDetector> {
   }
 }
 
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+class ExpandedHitTestArea extends SingleChildRenderObjectWidget {
+  final VoidCallback? onTap;
+  final Size? detectionSize;
+  final Size detectionBorder;
+  const ExpandedHitTestArea({
+    super.key,
+    super.child,
+    this.detectionSize,
+    this.detectionBorder = const Size.square(double.maxFinite),
+    this.onTap,
+  });
+
+  @override
+  RenderObject createRenderObject(BuildContext context) => RenderExpandedHitTestArea(
+        onTap: onTap,
+        detectionSize: detectionSize,
+        detectionBorder: detectionBorder,
+      );
+}
+
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 class TestGestureArenaMember extends GestureArenaMember {
   TestGestureArenaMember({this.onTap});
   final VoidCallback? onTap;
@@ -83,13 +97,15 @@ class TestGestureArenaMember extends GestureArenaMember {
   void rejectGesture(int key) {}
 }
 
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 class RenderExpandedHitTestArea extends RenderBox with RenderObjectWithChildMixin<RenderBox> {
   final Size? detectionSize;
-  final Size maxExpansion;
+  final Size detectionBorder;
   RenderExpandedHitTestArea({
     required this.onTap,
     this.detectionSize,
-    this.maxExpansion = const Size(8.0, 8.0),
+    this.detectionBorder = const Size(8.0, 8.0),
   });
   final VoidCallback? onTap;
   @override
@@ -123,8 +139,8 @@ class RenderExpandedHitTestArea extends RenderBox with RenderObjectWithChildMixi
 
   @override
   bool hitTest(HitTestResult result, {required Offset position}) {
-    final xw = this.maxExpansion.width;
-    final xh = this.maxExpansion.height;
+    final xw = this.detectionBorder.width;
+    final xh = this.detectionBorder.height;
     final dw = detectionSize?.width;
     final dh = detectionSize?.height;
     final width = size.width;
