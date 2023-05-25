@@ -15,6 +15,7 @@ class MyAnimatedFade extends StatefulWidget {
 
   final Widget? layer1;
   final Widget layer2;
+  final Duration delay;
   final Duration duration;
   final Curve curve;
   final Function()? onComplete;
@@ -29,6 +30,7 @@ class MyAnimatedFade extends StatefulWidget {
     Key? key,
     this.layer1,
     required this.layer2,
+    this.delay = const Duration(milliseconds: 0),
     this.duration = const Duration(milliseconds: 250),
     this.curve = Curves.linear,
     this.begin = 0.0,
@@ -54,7 +56,7 @@ class _State extends State<MyAnimatedFade> with SingleTickerProviderStateMixin {
   late final _controller = AnimationController(
     vsync: this,
     duration: this.widget.duration,
-  )..forward();
+  );
 
   //
   //
@@ -77,6 +79,7 @@ class _State extends State<MyAnimatedFade> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    Future.delayed(this.widget.delay, () => this._controller.forward());
     this._controller.addListener(() {
       if (this._controller.isCompleted) {
         this.widget.onComplete?.call();

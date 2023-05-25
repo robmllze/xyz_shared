@@ -15,6 +15,7 @@ class MyAnimatedSlide extends StatefulWidget {
 
   final Widget? child;
   final Color color;
+  final Duration delay;
   final Duration duration;
   final Curve curve;
   final MyAnimatedSlide_Direction direction;
@@ -28,6 +29,7 @@ class MyAnimatedSlide extends StatefulWidget {
     Key? key,
     this.child,
     this.color = Colors.transparent,
+    this.delay = const Duration(milliseconds: 0),
     this.direction = MyAnimatedSlide_Direction.BOTTOM_TO_TOP,
     this.curve = Curves.easeInOutCirc,
     this.duration = const Duration(milliseconds: 250),
@@ -52,7 +54,7 @@ class _State extends State<MyAnimatedSlide> with SingleTickerProviderStateMixin 
   late final _controller = AnimationController(
     vsync: this,
     duration: this.widget.duration,
-  )..forward();
+  );
 
   //
   //
@@ -80,6 +82,12 @@ class _State extends State<MyAnimatedSlide> with SingleTickerProviderStateMixin 
       curve: this.widget.curve,
     ),
   );
+
+  @override
+  void initState() {
+    Future.delayed(this.widget.delay, () => this._controller.forward());
+    super.initState();
+  }
 
   //
   //

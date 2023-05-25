@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 class MyAnimatedScale extends StatefulWidget {
   final Widget child;
+  final Duration delay;
   final Duration duration;
   final Curve curve;
   final double begin;
@@ -19,6 +20,7 @@ class MyAnimatedScale extends StatefulWidget {
   const MyAnimatedScale({
     Key? key,
     required this.child,
+    this.delay = const Duration(milliseconds: 0),
     this.duration = const Duration(milliseconds: 500),
     this.curve = Curves.linear,
     this.begin = 0.75,
@@ -40,7 +42,8 @@ class _MyAnimatedScaleState extends State<MyAnimatedScale> with SingleTickerProv
     this._controller = AnimationController(
       vsync: this,
       duration: this.widget.duration,
-    )..forward();
+    );
+    Future.delayed(this.widget.delay, () => this._controller.forward());
     this._animation = Tween<double>(
       begin: this.widget.begin,
       end: this.widget.end,
