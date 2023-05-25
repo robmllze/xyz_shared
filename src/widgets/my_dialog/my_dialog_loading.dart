@@ -21,7 +21,7 @@ class MyDialogLoading extends MyDialog {
   final MakeupDialog? dialogMakeup;
   final MakeupLoader? loaderMakeup;
   final String title, message;
-  final Future<void> Function()? onLoading;
+  final Future<void> Function()? loadingBody;
   final Widget? header;
 
   //
@@ -34,7 +34,7 @@ class MyDialogLoading extends MyDialog {
     this.loaderMakeup,
     required this.title,
     required this.message,
-    this.onLoading,
+    this.loadingBody,
     this.header,
     Future<void> Function(Object? e)? onError,
     bool shouldCloseOnComplete = false,
@@ -70,7 +70,7 @@ class _State extends State<MyDialogLoading> {
               makeup: (this.widget.loaderMakeup ?? G.theme.loaderDefault())..size = $32,
               future: () async {
                 try {
-                  await this.widget.onLoading?.call();
+                  await this.widget.loadingBody?.call();
                 } catch (e) {
                   await this.widget.onError?.call(e);
                 }
