@@ -115,9 +115,9 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
       await this.openDialog(
         MyDialogOkay(
           dialogMakeup: G.theme.dialogDefault(),
-          title: "Oh no",
+          title: "Error||error".tr(),
           message: e.toString(),
-          labelOkay: "OKAY",
+          labelOkay: "OKAY||okay".tr(),
         ),
       );
     };

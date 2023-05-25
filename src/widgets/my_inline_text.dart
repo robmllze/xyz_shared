@@ -35,7 +35,6 @@ class MyInlineText extends StatelessWidget {
   Widget build(BuildContext context) {
     final segments = text.split(RegExp(r"(?<=\}\})|(?=\{\{)"));
     final spans = <InlineSpan>[];
-    final defaultStyle1 = this.defaultStyle ?? styles.values.tryFirst;
 
     for (final segment in segments) {
       if (segment.startsWith("{{") && segment.endsWith("}}")) {
@@ -44,7 +43,7 @@ class MyInlineText extends StatelessWidget {
         final length = parts.length;
         final key = parts.tryFirst;
         final widget = widgets[key];
-        final style = styles[key] ?? defaultStyle1;
+        final style = styles[key] ?? styles.values.tryFirst ?? this.defaultStyle;
         final callback = callbacks[key];
         if (widget != null) {
           spans.add(
@@ -79,7 +78,7 @@ class MyInlineText extends StatelessWidget {
           WidgetSpan(
             child: Text(
               data,
-              style: defaultStyle1,
+              style: this.defaultStyle ?? styles.values.tryFirst,
               textAlign: this.textAlign,
               softWrap: this.softWrap,
             ),

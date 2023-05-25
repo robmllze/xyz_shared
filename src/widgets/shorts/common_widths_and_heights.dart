@@ -10,6 +10,21 @@ import '/all.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+Widget _wWidth44(Widget icon, Alignment alignment) {
+  return SizedBox(
+    width: $44,
+    child: Align(
+      alignment: alignment,
+      child: icon,
+    ),
+  );
+}
+
+Widget wWidth44_left(Widget icon) => _wWidth44(icon, Alignment.centerLeft);
+Widget wWidth44_right(Widget icon) => _wWidth44(icon, Alignment.centerRight);
+
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 SizedBox wWidth4() => SizedBox(width: $4);
 SizedBox wWidth8() => SizedBox(width: $8);
 SizedBox wWidth12() => SizedBox(width: $12);
