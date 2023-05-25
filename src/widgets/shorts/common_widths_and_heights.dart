@@ -10,18 +10,28 @@ import '/all.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-Widget _wWidth44(Widget icon, Alignment alignment) {
+Widget wWide160(Widget child, [Alignment alignment = Alignment.center]) {
   return SizedBox(
-    width: $44,
+    width: $160,
     child: Align(
       alignment: alignment,
-      child: icon,
+      child: child,
     ),
   );
 }
 
-Widget wWidth44_left(Widget icon) => _wWidth44(icon, Alignment.centerLeft);
-Widget wWidth44_right(Widget icon) => _wWidth44(icon, Alignment.centerRight);
+Widget wWide44(Widget child, [Alignment alignment = Alignment.center]) {
+  return SizedBox(
+    width: $44,
+    child: Align(
+      alignment: alignment,
+      child: child,
+    ),
+  );
+}
+
+Widget wWide44_left(Widget icon) => wWide44(icon, Alignment.centerLeft);
+Widget wWide44_right(Widget icon) => wWide44(icon, Alignment.centerRight);
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 

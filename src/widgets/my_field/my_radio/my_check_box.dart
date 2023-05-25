@@ -15,7 +15,7 @@ class MyCheckbox extends StatefulWidget {
   //
   //
 
-  final MakeupRadio makeup;
+  final MakeupRadio? makeup;
   final Pod<bool> pValue;
   final Pod<bool>? pEnabled;
   final List<Widget> children;
@@ -28,7 +28,7 @@ class MyCheckbox extends StatefulWidget {
 
   const MyCheckbox({
     Key? key,
-    required this.makeup,
+    this.makeup,
     required this.pValue,
     this.pEnabled,
     this.children = const [],
@@ -60,6 +60,7 @@ class _State extends State<MyCheckbox> {
 
   @override
   Widget build(_) {
+    final makeup = this.widget.makeup ?? G.theme.radioDefault();
     void onTap() {
       final enabled = this.widget.pEnabled?.valueAs() != false;
       if (enabled) {
@@ -72,12 +73,18 @@ class _State extends State<MyCheckbox> {
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
       onTap: onTap,
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (this.widget.makeup.isChildrenBefore) ...[
-            ...this.widget.children,
-            this.widget.makeup.spacer,
+          if (makeup.isChildrenBefore) ...[
+            makeup.spacer,
+            Expanded(
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: this.widget.children,
+              ),
+            ),
           ],
           Consumer(
             builder: (_, final ref, __) {
@@ -87,21 +94,26 @@ class _State extends State<MyCheckbox> {
                 case MyCheckboxType.CHECKBOX:
                   return MyMaterialCheckbox(
                     value: value,
-                    makeup: this.widget.makeup,
+                    makeup: makeup,
                     onChanged: enabled ? (_) => onTap() : null,
                   );
                 case MyCheckboxType.RADIO:
                   return MyMaterialRadio(
                     value: value,
-                    makeup: this.widget.makeup,
+                    makeup: makeup,
                     onChanged: enabled ? (_) => onTap() : null,
                   );
               }
             },
           ),
-          if (this.widget.makeup.isChildrenAfter) ...[
-            this.widget.makeup.spacer,
-            ...this.widget.children,
+          if (makeup.isChildrenAfter) ...[
+            makeup.spacer,
+            Expanded(
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: this.widget.children,
+              ),
+            ),
           ],
         ],
       ),
@@ -139,8 +151,15 @@ class MyMaterialCheckbox extends StatelessWidget {
   @override
   Widget build(_) {
     final fillColor = MaterialStateProperty.resolveWith<Color>((_) {
-      return this.onChanged != null ? this.makeup.selectedColor : this.makeup.disabledSelectedColor;
+      return this.onChanged != null
+          ? value == true
+              ? this.makeup.selectedColor
+              : this.makeup.unselectedBorderColor
+          : value == true
+              ? this.makeup.disabledSelectedColor
+              : this.makeup.disabledUnselectedBorderColor;
     });
+
     final overlayColor = MaterialStateProperty.resolveWith<Color>((_) => Colors.transparent);
     final checkbox = Checkbox(
       value: value,
@@ -190,7 +209,13 @@ class MyMaterialRadio extends StatelessWidget {
   @override
   Widget build(_) {
     final fillColor = MaterialStateProperty.resolveWith<Color>((_) {
-      return this.onChanged != null ? this.makeup.selectedColor : this.makeup.disabledSelectedColor;
+      return this.onChanged != null
+          ? value == true
+              ? this.makeup.selectedColor
+              : this.makeup.unselectedBorderColor
+          : value == true
+              ? this.makeup.disabledSelectedColor
+              : this.makeup.disabledUnselectedBorderColor;
     });
     final overlayColor = MaterialStateProperty.resolveWith<Color>((_) => Colors.transparent);
     final radio = Radio<bool?>(

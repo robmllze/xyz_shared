@@ -12,21 +12,21 @@ import "/all.dart";
 
 class MyInlineText extends StatelessWidget {
   final String text;
-  final TextStyle? defaultStyle;
-  final Map<String, TextStyle> styles;
-  final Map<String, Widget> widgets;
-  final Map<String, VoidCallback> callbacks;
+  final TextStyle? style;
+  final Map<String, TextStyle> namedStyles;
+  final Map<String, Widget> namedWidgets;
+  final Map<String, VoidCallback> namedCallbacks;
   final TextAlign textAlign;
   final bool softWrap;
 
   const MyInlineText(
     this.text, {
     Key? key,
-    this.defaultStyle,
-    this.styles = const {},
-    this.widgets = const {},
-    this.callbacks = const {},
-    this.textAlign = TextAlign.center,
+    this.style,
+    this.namedStyles = const {},
+    this.namedWidgets = const {},
+    this.namedCallbacks = const {},
+    this.textAlign = TextAlign.left,
     this.softWrap = true,
   }) : super(key: key);
 
@@ -42,9 +42,9 @@ class MyInlineText extends StatelessWidget {
         final parts = data.split(":");
         final length = parts.length;
         final key = parts.tryFirst;
-        final widget = widgets[key];
-        final style = styles[key] ?? styles.values.tryFirst ?? this.defaultStyle;
-        final callback = callbacks[key];
+        final widget = namedWidgets[key];
+        final style = namedStyles[key] ?? namedStyles.values.tryFirst ?? this.style;
+        final callback = namedCallbacks[key];
         if (widget != null) {
           spans.add(
             WidgetSpan(
@@ -78,7 +78,7 @@ class MyInlineText extends StatelessWidget {
           WidgetSpan(
             child: Text(
               data,
-              style: this.defaultStyle ?? styles.values.tryFirst,
+              style: this.style ?? namedStyles.values.tryFirst,
               textAlign: this.textAlign,
               softWrap: this.softWrap,
             ),

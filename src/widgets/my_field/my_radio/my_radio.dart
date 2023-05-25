@@ -2,21 +2,22 @@ import '/all.dart';
 
 @GenerateMakeups(
   parameters: {
-    "selectedColor": "Color",
-    "errorColor": "Color",
-    "unselectedBorderColor": "Color",
-    "disabledSelectedColor": "Color",
-    "disabledBorderColor": "Color",
-    "borderThickness": "double",
     "borderRadius": "BorderRadius",
+    "borderThickness": "double",
+    "disabledBorderColor": "Color",
+    "disabledSelectedColor": "Color",
+    "disabledUnselectedBorderColor": "Color",
+    "errorColor": "Color",
     "innerBorderRadius": "BorderRadius",
-    "shape": "BoxShape",
-    "size": "double",
+    "innerPadding": "EdgeInsets",
     "isChildrenAfter": "bool",
     "isChildrenBefore": "bool",
-    "spacer": "SizedBox",
-    "innerPadding": "EdgeInsets",
+    "selectedColor": "Color",
     "selectedIcon": "Icon?",
+    "shape": "BoxShape",
+    "size": "double",
+    "spacer": "SizedBox",
+    "unselectedBorderColor": "Color",
   },
 )
 abstract class MyRadio {}
