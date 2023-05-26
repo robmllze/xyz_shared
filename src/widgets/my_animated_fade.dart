@@ -79,7 +79,11 @@ class _State extends State<MyAnimatedFade> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    Future.delayed(this.widget.delay, () => this._controller.forward());
+    if (this.widget.delay.inMicroseconds == 0) {
+      this._controller.forward();
+    } else {
+      Future.delayed(this.widget.delay, () => this._controller.forward());
+    }
     this._controller.addListener(() {
       if (this._controller.isCompleted) {
         this.widget.onComplete?.call();
