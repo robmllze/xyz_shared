@@ -13,10 +13,11 @@ class LiveCollection<T> {
 
   LiveCollection({required this.ref, required this.fromMapper, required this.toMapper});
 
-  final pValues = <String, Pod<T>?>{};
+  final pDataMap = PodMap<String, T>({});
+  final pTemp = Pod<Map<String, T>>({});
 
-  Pod<T>? pDocument(String key) => this.pValues[key];
-  int get length => this.pValues.length;
+  Pod<T>? pDocument(String key) => this.pDataMap[key];
+  int get length => this.pDataMap.pods.length;
 
   Future<void> addDocument(T input) {
     final data = this.toMapper(input);
@@ -27,8 +28,6 @@ class LiveCollection<T> {
     final data = this.toMapper(input);
     return this.ref.doc(id).set(data, SetOptions(merge: true));
   }
-
-  final _queue = FunctionQueue();
 
   Future<void> restart({
     int? limit,
@@ -44,9 +43,13 @@ class LiveCollection<T> {
         final index = change.newIndex;
         final id = change.doc.id;
         if (index == -1) {
-          this.pValues[id]?.dispose();
-          this.pValues.remove(id);
-          onRemoved?.call(id);
+          this.pDataMap[id]?.dispose();
+          this.pDataMap.pods.remove(id);
+          () async {
+            await this.pTemp.set(this.pDataMap.value());
+            onRemoved?.call(id);
+            //print("REMOVED");
+          }();
           continue;
         }
         final doc = change.doc;
@@ -54,13 +57,21 @@ class LiveCollection<T> {
         if (data != null) {
           data[KEY_INDEX] = index;
           final mapped = fromMapper(data);
-          final pod = this.pValues[id];
+          final pod = this.pDataMap[id];
           if (pod == null) {
-            this.pValues[id] ??= Pod<T>(mapped);
-            onAdded?.call(id, mapped);
+            this.pDataMap.pods[id] ??= Pod<T>(mapped);
+            () async {
+              await this.pTemp.set(this.pDataMap.value());
+              onAdded?.call(id, mapped);
+              //print("ADDED");
+            }();
           } else {
-            this._queue.add(() => pod.set(mapped));
-            onChanged?.call(id, mapped);
+            () async {
+              await pod.set(mapped);
+              await this.pTemp.set(this.pDataMap.value());
+              onChanged?.call(id, mapped);
+              //print("CHANGED");
+            }();
           }
         }
       }
@@ -69,16 +80,9 @@ class LiveCollection<T> {
 
   Future<void> stop() async => await this._stream?.cancel();
 
-  Future<void> _disposeAndEmptyPods() async {
-    final pods = this.pValues.values;
-    for (final pod in pods) {
-      await pod?.dispose();
-    }
-    this.pValues.clear();
-  }
-
   Future<void> dispose() async {
     await this.stop();
-    await this._disposeAndEmptyPods();
+    await this.pDataMap.dispose();
+    await this.pTemp.dispose();
   }
 }
