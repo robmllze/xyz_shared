@@ -71,7 +71,7 @@ class MyTextField extends MyFieldWidget {
     this.autofocus = false,
     this.focusNode,
     this.onChanged,
-    this.onChangedDelay = const Duration(seconds: 1),
+    this.onChangedDelay = const Duration(seconds: 2),
     this.onChangedDelayed,
     this.onSubmitted,
     this.onTapInside,

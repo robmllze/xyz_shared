@@ -7,6 +7,7 @@ export 'util_internet_connection_checker.dart';
 export 'util_keyboard_listener.dart';
 export 'util_keys.dart';
 export 'util_lazy.dart';
+export 'util_live_collection.dart';
 export 'util_live_document.dart';
 export 'util_platform.dart';
 export 'util_timestamp.dart';
