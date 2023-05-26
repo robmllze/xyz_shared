@@ -13,11 +13,11 @@ class LiveCollection<T> {
 
   LiveCollection({required this.ref, required this.fromMapper, required this.toMapper});
 
-  final pDataMap = PodMap<String, T>({});
-  final pTemp = Pod<Map<String, T>>({});
+  final pData = PodMap<String, T>({});
+  final pRefresh = Pod<void>(null);
 
-  Pod<T>? pDocument(String key) => this.pDataMap[key];
-  int get length => this.pDataMap.pods.length;
+  Pod<T>? pDocument(String key) => this.pData[key];
+  int get length => this.pData.pods.length;
 
   Future<void> addDocument(T input) {
     final data = this.toMapper(input);
@@ -43,10 +43,10 @@ class LiveCollection<T> {
         final index = change.newIndex;
         final id = change.doc.id;
         if (index == -1) {
-          this.pDataMap[id]?.dispose();
-          this.pDataMap.pods.remove(id);
+          this.pData[id]?.dispose();
+          this.pData.pods.remove(id);
           () async {
-            await this.pTemp.set(this.pDataMap.value());
+            await this.pRefresh.refresh();
             onRemoved?.call(id);
             //print("REMOVED");
           }();
@@ -57,18 +57,18 @@ class LiveCollection<T> {
         if (data != null) {
           data[KEY_INDEX] = index;
           final mapped = fromMapper(data);
-          final pod = this.pDataMap[id];
+          final pod = this.pData[id];
           if (pod == null) {
-            this.pDataMap.pods[id] ??= Pod<T>(mapped);
+            this.pData.pods[id] ??= Pod<T>(mapped);
             () async {
-              await this.pTemp.set(this.pDataMap.value());
+              await this.pRefresh.refresh();
               onAdded?.call(id, mapped);
               //print("ADDED");
             }();
           } else {
             () async {
               await pod.set(mapped);
-              await this.pTemp.set(this.pDataMap.value());
+              await this.pRefresh.refresh();
               onChanged?.call(id, mapped);
               //print("CHANGED");
             }();
@@ -82,7 +82,7 @@ class LiveCollection<T> {
 
   Future<void> dispose() async {
     await this.stop();
-    await this.pDataMap.dispose();
-    await this.pTemp.dispose();
+    await this.pData.dispose();
+    await this.pRefresh.dispose();
   }
 }
