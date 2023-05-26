@@ -6,16 +6,27 @@ class LiveCollection<T> {
   static const KEY_INDEX = "__index__";
   final CollectionReference<Json> ref;
 
-  final T Function(Json) mapper;
+  final T Function(Json) fromMapper;
+  final Json Function(T) toMapper;
 
   StreamSubscription<QuerySnapshot<Json>>? _stream;
 
-  LiveCollection({required this.ref, required this.mapper});
+  LiveCollection({required this.ref, required this.fromMapper, required this.toMapper});
 
-  final _documents = <String, Pod<T>?>{};
+  final pValues = <String, Pod<T>?>{};
 
-  Pod<T>? getDocument(String key) => this._documents[key];
-  int get length => this._documents.length;
+  Pod<T>? pDocument(String key) => this.pValues[key];
+  int get length => this.pValues.length;
+
+  Future<void> addDocument(T input) {
+    final data = this.toMapper(input);
+    return this.ref.add(data);
+  }
+
+  Future<void> setDocument(String id, T input) {
+    final data = this.toMapper(input);
+    return this.ref.doc(id).set(data, SetOptions(merge: true));
+  }
 
   final _queue = FunctionQueue();
 
@@ -33,8 +44,8 @@ class LiveCollection<T> {
         final index = change.newIndex;
         final id = change.doc.id;
         if (index == -1) {
-          this._documents[id]?.dispose();
-          this._documents.remove(id);
+          this.pValues[id]?.dispose();
+          this.pValues.remove(id);
           onRemoved?.call(id);
           continue;
         }
@@ -42,10 +53,10 @@ class LiveCollection<T> {
         final data = doc.data();
         if (data != null) {
           data[KEY_INDEX] = index;
-          final mapped = mapper(data);
-          final pod = this._documents[id];
+          final mapped = fromMapper(data);
+          final pod = this.pValues[id];
           if (pod == null) {
-            this._documents[id] ??= Pod<T>(mapped);
+            this.pValues[id] ??= Pod<T>(mapped);
             onAdded?.call(id, mapped);
           } else {
             this._queue.add(() => pod.set(mapped));
@@ -59,11 +70,11 @@ class LiveCollection<T> {
   Future<void> stop() async => await this._stream?.cancel();
 
   Future<void> _disposeAndEmptyPods() async {
-    final pods = this._documents.values;
+    final pods = this.pValues.values;
     for (final pod in pods) {
       await pod?.dispose();
     }
-    this._documents.clear();
+    this.pValues.clear();
   }
 
   Future<void> dispose() async {
