@@ -27,7 +27,7 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
     _didRemoveSplashScreen = true;
   }
 
-  final _pFacade = Pod<Facade?>(null);
+  final _pFacade = Pod<MyFacade?>(null);
 
   //
   //
@@ -105,11 +105,13 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
   //
   //
 
-  Future<void> showFacade([Facade? facade]) async {
+  /// ...
+  Future<void> showFacade([MyFacade? facade]) async {
     final image = await G.router.captureScreenImage();
-    await this._pFacade.set((facade ?? const Facade()).copyWith(image: image));
+    await this._pFacade.set((facade ?? const MyFacade()).copyWith(image: image));
   }
 
+  /// ...
   Future<void> hideFacade() async {
     await this._pFacade.set(null);
   }
@@ -176,52 +178,6 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
     return MyHideKeyboardOnTap(
       child: this.layout(
         this.body(context),
-      ),
-    );
-  }
-}
-
-// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-class Facade {
-  final ui.Image? image;
-  final double blurStrength;
-  final Color blurColor;
-  final Widget? child;
-
-  const Facade({
-    this.image,
-    this.child,
-    this.blurStrength = 2.5,
-    this.blurColor = Colors.transparent,
-  });
-
-  Facade copyWith({
-    ui.Image? image,
-    double? blurStrength,
-    Color? blurColor,
-    Widget? child,
-  }) {
-    return Facade(
-      image: image ?? this.image,
-      blurStrength: blurStrength ?? this.blurStrength,
-      blurColor: blurColor ?? this.blurColor,
-      child: child ?? this.child,
-    );
-  }
-
-  Widget draw() {
-    return Blur(
-      blur: blurStrength,
-      blurColor: blurColor,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          RawImage(
-            image: image,
-          ),
-          if (child != null) child!
-        ],
       ),
     );
   }
