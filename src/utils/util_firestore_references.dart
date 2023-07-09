@@ -88,6 +88,23 @@ class _FieldReference {
     );
   }
 
+  Future<bool> modifyArrayTr({
+    List<dynamic> add = const [],
+    List<dynamic> remove = const [],
+    bool ensureUniqueElements = true,
+  }) {
+    return this.update(
+      (final data) async {
+        if (data is List) {
+          return (ensureUniqueElements ? data.toSet().toList() : data.toList())
+            ..addAll(add)
+            ..removeWhere((final e) => remove.contains(e));
+        }
+        return add.toList()..removeWhere((final e) => remove.contains(e));
+      },
+    );
+  }
+
   //
   //
   //

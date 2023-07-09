@@ -4,7 +4,8 @@
 //
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
-import 'dart:math' as math;
+import 'package:crypto/crypto.dart' show sha256;
+import 'dart:convert' show utf8;
 
 import 'package:flutter/painting.dart';
 
@@ -45,9 +46,17 @@ extension ColorUtils on Color {
 }
 
 Color generateAvatarColorFromName(String name) {
-  final random = math.Random(name.hashCode);
-  // Generate a random hue value between 0 and 359
-  final hue = random.nextDouble() * 360.0;
-  // Create a color with the desired saturation, lightness, and alpha values
-  return HSLColor.fromAHSL(1.0, hue, 0.35, 0.7).toColor();
+  // Generate a hash value from the name.
+  final bytes = utf8.encode(name);
+  final hash = sha256.convert(bytes);
+  final hashString = hash.toString();
+
+  // Convert the first 8 characters of the hash to an integer.
+  final hashInteger = int.parse(hashString.substring(0, 8), radix: 16);
+
+  // Map the hash integer to a hue value between 0 and 359.
+  final hue = hashInteger % 360;
+
+  // Create a color with the desired saturation, lightness, and alpha values.
+  return HSLColor.fromAHSL(1.0, hue.toDouble(), 0.35, 0.7).toColor();
 }
