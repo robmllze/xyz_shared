@@ -43,9 +43,11 @@ class MyFacade {
       blur: blurStrength,
       blurColor: blurColor,
       child: Stack(
+        fit: StackFit.expand,
         alignment: Alignment.center,
         children: [
           RawImage(
+            fit: BoxFit.fill,
             image: image,
           ),
           if (child != null) child!

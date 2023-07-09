@@ -106,8 +106,8 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
   //
 
   /// ...
-  Future<void> showFacade([MyFacade? facade]) async {
-    final image = await G.router.captureScreenImage();
+  Future<void> showFacade({MyFacade? facade, double pixelRatio = 1.0}) async {
+    final image = await G.router.captureScreenImage(pixelRatio: pixelRatio);
     await this._pFacade.set((facade ?? const MyFacade()).copyWith(image: image));
   }
 
