@@ -85,13 +85,12 @@ class ScreenFacadeConfiguration extends MyRouteConfiguration {
 
   // Internal parameters.
 
-  /// Key corresponding to the value `capturedScreenImage`
-  static const K_CAPTURED_SCREEN_IMAGE = "captured_screen_image";
+  /// Key corresponding to the value `facade`
+  static const K_FACADE = "facade";
 
-  /// Returns the **internal parameter** with the key `captured_screen_image`
-  /// or [K_CAPTURED_SCREEN_IMAGE].
-  ui.Image get capturedScreenImage =>
-      super.arguments<ui.Image>(K_CAPTURED_SCREEN_IMAGE)!;
+  /// Returns the **internal parameter** with the key `facade`
+  /// or [K_FACADE].
+  MyFacade get facade => super.arguments<MyFacade>(K_FACADE)!;
 
   /// Creates a new configuration object for [ScreenFacade]
   /// that can be passed to [G.router] to route to the screen with the applied
@@ -102,12 +101,12 @@ class ScreenFacadeConfiguration extends MyRouteConfiguration {
   ScreenFacadeConfiguration({
     String? key,
     // Internal parameters.
-    required ui.Image capturedScreenImage,
+    required MyFacade facade,
   }) : super(
           _LOCATION,
           key: key,
           internalParameters: {
-            K_CAPTURED_SCREEN_IMAGE: capturedScreenImage,
+            K_FACADE: facade,
           },
         );
 
@@ -120,6 +119,8 @@ class ScreenFacadeConfiguration extends MyRouteConfiguration {
           key: from.key,
           internalParameters: from.internalParameters,
         );
+
+  get capturedScreenImage => null;
 
   /// Converts this ScreenFacadeConfiguration object [to] a
   /// [MyRouteConfiguration] object.

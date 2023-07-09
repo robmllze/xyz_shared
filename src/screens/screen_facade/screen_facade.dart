@@ -10,7 +10,6 @@
 // ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
 
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui show Image;
 
 import '/all.dart';
 
@@ -18,7 +17,7 @@ part 'screen_facade.g.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-@GenerateScreenAccess(internalParameters: {"capturedScreenImage": "ui.Image"})
+@GenerateScreenAccess(internalParameters: {"facade": "MyFacade"})
 class ScreenFacade extends MyScreen {
   ScreenFacade(MyRouteConfiguration configuration)
       : super(
@@ -37,6 +36,6 @@ class _State extends MyScreenState<ScreenFacade, ScreenFacadeConfiguration,
     MyScreenLogic<ScreenFacadeConfiguration>> {
   @override
   Widget body(_) {
-    return RawImage(image: this.configuration.capturedScreenImage);
+    return this.configuration.facade.draw();
   }
 }
