@@ -20,6 +20,7 @@ class MyDialogLoading extends MyDialog {
 
   final MakeupDialog? dialogMakeup;
   final MakeupLoader? loaderMakeup;
+  final MyFacade facade;
   final String title, message;
   final Future<void> Function()? loadingBody;
   final Widget? header;
@@ -32,6 +33,7 @@ class MyDialogLoading extends MyDialog {
     Key? key,
     this.dialogMakeup,
     this.loaderMakeup,
+    this.facade = const MyFacade(),
     required this.title,
     required this.message,
     this.loadingBody,
@@ -60,6 +62,7 @@ class _State extends State<MyDialogLoading> {
     final dialogMakeup = this.widget.dialogMakeup ?? G.theme.dialogDefault();
     return MyDialogBody(
       makeup: dialogMakeup,
+      facade: this.widget.facade,
       header: this.widget.header,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: $32, vertical: $48),

@@ -32,27 +32,44 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
 
   final _facadeKey = GlobalKey();
 
-  Future<ui.Image> captureScreenImage({double pixelRatio = 1.0}) async {
+  Future<ui.Image> captureScreenImage({
+    double pixelRatio = 4.0,
+  }) async {
     final boundary = this._facadeKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
     final image = await boundary.toImage(pixelRatio: pixelRatio);
     return image;
   }
 
-  Future<void> replaceWithFacade([MyFacade? facade]) async {
+  Future<MyFacade> captureFacade({
+    MyFacade facade = const MyFacade(),
+    double pixelRatio = 4.0,
+  }) async {
+    return facade.copyWith(
+      image: await G.router.captureScreenImage(pixelRatio: pixelRatio),
+    );
+  }
+
+  Future<void> replaceWithFacade({
+    MyFacade? facade,
+    double pixelRatio = 4.0,
+  }) async {
     await G.router.replace(
       ScreenFacadeConfiguration(
         facade: (facade ?? const MyFacade()).copyWith(
-          image: await captureScreenImage(pixelRatio: 1.2),
+          image: await captureScreenImage(pixelRatio: 4.0),
         ),
       ),
     );
   }
 
-  Future<void> pushFacade([MyFacade? facade]) async {
+  Future<void> pushFacade({
+    MyFacade? facade,
+    double pixelRatio = 4.0,
+  }) async {
     await G.router.push(
       ScreenFacadeConfiguration(
         facade: (facade ?? const MyFacade()).copyWith(
-          image: await captureScreenImage(pixelRatio: 1.2),
+          image: await captureScreenImage(pixelRatio: 4.0),
         ),
       ),
     );

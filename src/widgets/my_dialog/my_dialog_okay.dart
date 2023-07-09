@@ -20,6 +20,7 @@ class MyDialogOkay extends MyDialog {
 
   final MakeupDialog? dialogMakeup;
   final MakeupButton? buttonMakeup;
+  final MyFacade facade;
   final String title, message, labelOkay;
   final Widget? header;
   final Future<void> Function()? onTapOkay, onClose;
@@ -32,6 +33,7 @@ class MyDialogOkay extends MyDialog {
     Key? key,
     this.dialogMakeup,
     this.buttonMakeup,
+    this.facade = const MyFacade(),
     required this.title,
     required this.message,
     required this.labelOkay,
@@ -64,6 +66,7 @@ class _State extends State<MyDialogOkay> {
     final onClose = this.widget.onClose;
     return MyDialogBody(
       makeup: dialogMakeup,
+      facade: this.widget.facade,
       header: this.widget.header,
       onClose: onClose != null
           ? () async {

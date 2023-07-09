@@ -18,6 +18,7 @@ class MyDialogBody extends StatefulWidget {
 
   final MakeupDialog makeup;
   final Widget child;
+  final MyFacade facade;
   final Widget? header;
   final Future<void> Function()? onClose;
 
@@ -29,6 +30,7 @@ class MyDialogBody extends StatefulWidget {
     Key? key,
     required this.makeup,
     required this.child,
+    this.facade = const MyFacade(),
     this.header,
     this.onClose,
   }) : super(key: key);
@@ -52,51 +54,59 @@ class _State extends State<MyDialogBody> {
     return Material(
       color: Colors.transparent,
       child: MyAnimatedFade(
-        layer1: Container(color: makeup.overlayColor),
-        layer2: Column(
-          children: [
-            const Spacer(),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: $24),
+        layer2: this
+            .widget
+            .facade
+            .copyWith(
               child: Container(
-                width: double.infinity,
-                decoration: makeup.decoration,
-                child: ClipRRect(
-                  borderRadius: makeup.decoration.borderRadius,
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          if (header != null) header,
-                          this.widget.child,
-                        ],
-                      ),
-                      if (onClose != null)
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: makeup.closeIconBackroundColor,
-                              borderRadius: makeup.decoration.borderRadius,
-                            ),
-                            child: MyButtonIcon(
-                              icon: Icon(
-                                Icons.close,
-                                color: makeup.closeIconForegroundColor,
-                                size: $16,
+                color: makeup.overlayColor,
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: $24),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: makeup.decoration,
+                        child: ClipRRect(
+                          borderRadius: makeup.decoration.borderRadius,
+                          child: Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  if (header != null) header,
+                                  this.widget.child,
+                                ],
                               ),
-                              onTap: onClose,
-                            ),
+                              if (onClose != null)
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: makeup.closeIconBackroundColor,
+                                      borderRadius: makeup.decoration.borderRadius,
+                                    ),
+                                    child: MyButtonIcon(
+                                      icon: Icon(
+                                        Icons.close,
+                                        color: makeup.closeIconForegroundColor,
+                                        size: $16,
+                                      ),
+                                      onTap: onClose,
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
                 ),
               ),
-            ),
-            const Spacer(),
-          ],
-        ),
+            )
+            .draw(),
       ),
     );
   }

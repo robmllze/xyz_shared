@@ -6,22 +6,19 @@
 
 import 'dart:ui' as ui;
 
-import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 
 // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 class MyFacade {
   final ui.Image? image;
-  final double blurStrength;
-  final Color blurColor;
+  final double sigma;
   final Widget? child;
 
   const MyFacade({
     this.image,
     this.child,
-    this.blurStrength = 2.5,
-    this.blurColor = Colors.transparent,
+    this.sigma = 0.0,
   });
 
   MyFacade copyWith({
@@ -32,27 +29,30 @@ class MyFacade {
   }) {
     return MyFacade(
       image: image ?? this.image,
-      blurStrength: blurStrength ?? this.blurStrength,
-      blurColor: blurColor ?? this.blurColor,
+      sigma: blurStrength ?? this.sigma,
       child: child ?? this.child,
     );
   }
 
   Widget draw() {
-    return Blur(
-      blur: blurStrength,
-      blurColor: blurColor,
-      child: Stack(
-        fit: StackFit.expand,
-        alignment: Alignment.center,
-        children: [
-          RawImage(
-            fit: BoxFit.fill,
-            image: image,
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        ClipRRect(
+          child: ImageFiltered(
+            imageFilter: ui.ImageFilter.blur(
+              sigmaX: sigma,
+              sigmaY: sigma,
+              tileMode: ui.TileMode.clamp,
+            ),
+            child: RawImage(
+              fit: BoxFit.fill,
+              image: image,
+            ),
           ),
-          if (child != null) child!
-        ],
-      ),
+        ),
+        if (child != null) child!
+      ],
     );
   }
 }
