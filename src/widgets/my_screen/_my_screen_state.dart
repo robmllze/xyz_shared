@@ -27,6 +27,8 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
     _didRemoveSplashScreen = true;
   }
 
+  final _pFacade = Pod<Facade?>(null);
+
   //
   //
   //
@@ -76,6 +78,9 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
 
     // ...
     this._rawLogic.dispose();
+
+    // ...
+    this._pFacade.dispose();
   }
 
   //
@@ -85,13 +90,28 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
   /// ...
   @mustCallSuper
   Widget layout(Widget body) {
-    return MyAnimatedFade(
-      duration: this.widget.makeup.transitionDuration,
-      layer2: Container(
-        color: this.widget.makeup.backgroundColor,
-        child: body,
-      ),
-    );
+    final facade = this._pFacade.watch(ref);
+    return facade?.draw() ??
+        MyAnimatedFade(
+          duration: this.widget.makeup.transitionDuration,
+          layer2: Container(
+            color: this.widget.makeup.backgroundColor,
+            child: body,
+          ),
+        );
+  }
+
+  //
+  //
+  //
+
+  Future<void> showFacade([Facade? facade]) async {
+    final image = await G.router.captureScreenImage();
+    await this._pFacade.set((facade ?? const Facade()).copyWith(image: image));
+  }
+
+  Future<void> hideFacade() async {
+    await this._pFacade.set(null);
   }
 
   //
@@ -156,6 +176,52 @@ abstract class MyScreenState<T1 extends MyScreen, T2 extends MyRouteConfiguratio
     return MyHideKeyboardOnTap(
       child: this.layout(
         this.body(context),
+      ),
+    );
+  }
+}
+
+// ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+class Facade {
+  final ui.Image? image;
+  final double blurStrength;
+  final Color blurColor;
+  final Widget? child;
+
+  const Facade({
+    this.image,
+    this.child,
+    this.blurStrength = 2.5,
+    this.blurColor = Colors.transparent,
+  });
+
+  Facade copyWith({
+    ui.Image? image,
+    double? blurStrength,
+    Color? blurColor,
+    Widget? child,
+  }) {
+    return Facade(
+      image: image ?? this.image,
+      blurStrength: blurStrength ?? this.blurStrength,
+      blurColor: blurColor ?? this.blurColor,
+      child: child ?? this.child,
+    );
+  }
+
+  Widget draw() {
+    return Blur(
+      blur: blurStrength,
+      blurColor: blurColor,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          RawImage(
+            image: image,
+          ),
+          if (child != null) child!
+        ],
       ),
     );
   }

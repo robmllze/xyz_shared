@@ -32,7 +32,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
 
   final _facadeKey = GlobalKey();
 
-  Future<ui.Image> _captureScreenImage() async {
+  Future<ui.Image> captureScreenImage() async {
     final boundary = this._facadeKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
     final image = await boundary.toImage();
     return image;
@@ -41,7 +41,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   Future<void> replaceWithFacade() async {
     await G.router.replace(
       ScreenFacadeConfiguration(
-        capturedScreenImage: await _captureScreenImage(),
+        capturedScreenImage: await captureScreenImage(),
       ),
     );
   }
@@ -49,7 +49,7 @@ class MyRouterDelegate extends RouterDelegate<MyRouteConfiguration>
   Future<void> pushFacade() async {
     await G.router.push(
       ScreenFacadeConfiguration(
-        capturedScreenImage: await _captureScreenImage(),
+        capturedScreenImage: await captureScreenImage(),
       ),
     );
   }
